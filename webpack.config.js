@@ -23,6 +23,10 @@ var config = {
         test : /\.js?/,
         include : SRC_DIR,
         loaders : ['react-hot', 'babel']
+      },
+      {
+        test: /\.css$/,
+        loader: "style-loader!css-loader"
       }
     ]
   },
