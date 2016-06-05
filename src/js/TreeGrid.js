@@ -1,13 +1,16 @@
 import React from 'react';
-import './css/treegrid.css';
+import '../css/treegrid.css';
 
-import Header from './js/Header';
+import Header from './Header';
 
 class TreeGrid extends React.Component {
   render() {
+
+    const { columns } = this.props.options;
+
     return (
       <div className='tgrid'>
-        <Header columns={this.props.options.columns}></Header>
+        <Header columns={columns}></Header>
       </div>
     );
   }

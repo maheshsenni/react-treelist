@@ -1,3 +1,7 @@
-.tgrid-header {
-  background-color: #ddd;
+.tgrid-header-wrapper {
+  background-color: #fafafa;
+}
+
+.tgrid-header-table {
+  width: 100%;
 }

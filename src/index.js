@@ -1,13 +1,14 @@
 import React from 'react';
 import {render} from 'react-dom';
-import TreeGrid from './TreeGrid';
+import TreeGrid from './js/TreeGrid';
 
 import {DATA} from './sample-data/reddit-all';
 
 const OPTIONS = {
   columns: [{
     title: 'ID',
-    field: 'id'
+    field: 'id',
+    width: 50
   }, {
     title: 'Subreddit',
     field: 'subreddit'
