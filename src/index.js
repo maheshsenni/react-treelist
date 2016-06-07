@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import TreeGrid from './js/TreeGrid';
 
-import {DATA} from './sample-data/reddit-all';
+import {DATA} from './sample-data/tree-data-nested';
 
 const OPTIONS = {
   columns: [{
@@ -10,14 +10,14 @@ const OPTIONS = {
     field: 'id',
     width: 50
   }, {
-    title: 'Subreddit',
-    field: 'subreddit'
+    title: 'First Name',
+    field: 'firstName'
   }, {
-    title: 'Author',
-    field: 'author'
+    title: 'Last Name',
+    field: 'lastName'
   }, {
-    title: 'Title',
-    field: 'title'
+    title: 'Employee ID',
+    field: 'employeeId'
   }]
 };
 

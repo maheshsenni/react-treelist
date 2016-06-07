@@ -33,7 +33,7 @@ class Header extends React.Component {
         </table>
         <ColumnResizeHandler></ColumnResizeHandler>
       </div>
-      );
+    );
   }
 }
 
