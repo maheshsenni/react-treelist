@@ -1,0 +1,8 @@
+.tgrid-data-cell {
+  padding: 0.5em 0.75em;
+}
+
+.i-expand, .i-collapse {
+  margin-right: 5px;
+  cursor: pointer;
+}

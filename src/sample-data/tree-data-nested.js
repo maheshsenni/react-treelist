@@ -29,11 +29,15 @@ export const DATA = [{ id: 0,
 }, { id: 7,
     firstName: 'Child 7',
     lastName: 'Last 7',
-    employeeId: 3971,
+    employeeId: 2971,
     parentId: 1
 }, { id: 8,
     firstName: 'Child 8',
     lastName: 'Last 8',
-    employeeId: 3971,
+    employeeId: 5971,
     parentId: 1
+}, { id: 11,
+    firstName: 'Man',
+    lastName: 'No name',
+    employeeId: 3977
 }];
