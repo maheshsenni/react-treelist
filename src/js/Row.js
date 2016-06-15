@@ -20,14 +20,14 @@ class Row extends React.Component {
     }
   }
 
-  makeCells(columns, data) {
+  makeCells(columns, data, canExpand) {
     return columns.map((col, index) => {
       return (
         <td className='tgrid-data-cell' key={ 'col' + col.field }>
           {(() => {
-            if (index === 0 && data.child && !this.state.expanded) {
+            if (index === 0 && canExpand && !this.state.expanded) {
               return <span className='i-expand' onClick={this.handleExpandClick}>+</span>;
-            } else if (index === 0 && data.child && this.state.expanded) {
+            } else if (index === 0 && canExpand && this.state.expanded) {
               return <span className='i-collapse' onClick={this.handleExpandClick}>-</span>;
             }
           })()}
@@ -38,8 +38,8 @@ class Row extends React.Component {
   }
 
   render() {
-    const { columns, data } = this.props;
-    const cells = this.makeCells(columns, data);
+    const { columns, data, canExpand } = this.props;
+    const cells = this.makeCells(columns, data, canExpand);
 
     return (
       <tr>{cells}</tr>
@@ -48,9 +48,21 @@ class Row extends React.Component {
 }
 
 Row.propTypes = {
+  key: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.object.isRequired,
+  canExpand: React.PropTypes.bool.isRequired,
   onExpand: React.PropTypes.func
 };
 
-export default Row;
+const createRow = function(data, columns, idField, canExpand, onExpandHandler) {
+  console.log('Create row for ' + canExpand);
+  return (<Row
+            key={'row-' + data[idField]}
+            columns={columns}
+            data={data}
+            canExpand={canExpand}
+            onExpand={onExpandHandler}></Row>);
+}
+
+export { Row, createRow };

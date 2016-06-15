@@ -5,6 +5,10 @@ import TreeGrid from './js/TreeGrid';
 import {DATA} from './sample-data/tree-data-nested';
 
 const OPTIONS = {
+  
+  id: 'key',
+  parentId: 'parentKey',
+
   columns: [{
     title: 'ID',
     field: 'id',
