@@ -1,7 +1,7 @@
 import '../css/body.css';
 import React from 'react';
 import Colgroup from './Colgroup';
-import { Row, createRow } from './Row';
+import { Row, createRow, ROW_EXPAND, ROW_COLLAPSE } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
 
 const _isExpanded = function(rowId, expandedRows) {
@@ -13,7 +13,7 @@ class Body extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'Body';
-    this.handleRowExpand = this.handleRowExpand.bind(this);
+    this.handleExpandToggle = this.handleExpandToggle.bind(this);
     this.state = {
       expandedRows: []
     };
@@ -27,7 +27,6 @@ class Body extends React.Component {
     
     const rows = [];
     rootParents.forEach((d) => {
-      // rows.push(createRow(d, columns, idField, d[idField] in metadata, this.handleRowExpand))
       rows.push(...this.makeRowsRecursive(d, metadata, columns, idField, parentIdField));
     });
     console.log('make rows ' + rows.length);
@@ -38,7 +37,7 @@ class Body extends React.Component {
     const rows = [];
     const canExpand = row[idField] in metadata;
     // push the parent row first    
-    rows.push(createRow(row, columns, idField, canExpand, this.handleRowExpand));
+    rows.push(createRow(row, columns, idField, canExpand, this.handleExpandToggle));
     if (canExpand && _isExpanded(row[idField], this.state.expandedRows)) {
       let children = getChildren(row, this.props.data, idField, parentIdField);
       children.forEach((d) => {
@@ -48,10 +47,18 @@ class Body extends React.Component {
     return rows;
   }
 
-  handleRowExpand(row) {
-    this.setState({
-      expandedRows: [...this.state.expandedRows, row[this.props.idField]]
-    });
+  handleExpandToggle(row, expandOrCollapse) {
+    if (expandOrCollapse === ROW_EXPAND) {
+      this.setState({
+        expandedRows: [...this.state.expandedRows, row[this.props.idField]]
+      });
+    } else {
+      const rowIndex = this.state.expandedRows.indexOf(row[this.props.idField]);
+      this.state.expandedRows.splice(rowIndex, 1);
+      this.setState({
+        expandedRows: this.state.expandedRows
+      });
+    }
   }
   
   render() {

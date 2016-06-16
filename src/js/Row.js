@@ -1,22 +1,24 @@
 import '../css/row.css';
 import React from 'react';
 
+const ROW_EXPAND = 1;
+const ROW_COLLAPSE = 2;
+
 class Row extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'Row';
     this.state = { expanded: false };
-    this.handleExpandClick = this.handleExpandClick.bind(this);
+    this.handleExpandToggle = this.handleExpandToggle.bind(this);
   }
 
-  handleExpandClick() {
+  handleExpandToggle() {
     if (this.state.expanded) {
       this.setState({ expanded: false });
+      this.props.onExpandToggle(this.props.data, ROW_COLLAPSE);
     } else {
       this.setState({ expanded: true });
-      if (typeof(this.props.onExpand) !== undefined) {
-        this.props.onExpand(this.props.data);
-      }
+      this.props.onExpandToggle(this.props.data, ROW_EXPAND);
     }
   }
 
@@ -26,9 +28,9 @@ class Row extends React.Component {
         <td className='tgrid-data-cell' key={ 'col' + col.field }>
           {(() => {
             if (index === 0 && canExpand && !this.state.expanded) {
-              return <span className='i-expand' onClick={this.handleExpandClick}>+</span>;
+              return <span className='i-expand' onClick={this.handleExpandToggle}>+</span>;
             } else if (index === 0 && canExpand && this.state.expanded) {
-              return <span className='i-collapse' onClick={this.handleExpandClick}>-</span>;
+              return <span className='i-collapse' onClick={this.handleExpandToggle}>-</span>;
             }
           })()}
           {data[col.field]}
@@ -51,16 +53,16 @@ Row.propTypes = {
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.object.isRequired,
   canExpand: React.PropTypes.bool.isRequired,
-  onExpand: React.PropTypes.func
+  onExpandToggle: React.PropTypes.func
 };
 
-const createRow = function(data, columns, idField, canExpand, onExpandHandler) {
+const createRow = function(data, columns, idField, canExpand, onExpandToggleHandler) {
   return (<Row
             key={'row-' + data[idField]}
             columns={columns}
             data={data}
             canExpand={canExpand}
-            onExpand={onExpandHandler}></Row>);
+            onExpandToggle={onExpandToggleHandler}></Row>);
 }
 
-export { Row, createRow };
+export { Row, createRow, ROW_EXPAND, ROW_COLLAPSE };
