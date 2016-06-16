@@ -15,7 +15,7 @@ class Row extends React.Component {
     } else {
       this.setState({ expanded: true });
       if (typeof(this.props.onExpand) !== undefined) {
-        this.props.onExpand(this.props.data.id);
+        this.props.onExpand(this.props.data);
       }
     }
   }
@@ -48,7 +48,6 @@ class Row extends React.Component {
 }
 
 Row.propTypes = {
-  key: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.object.isRequired,
   canExpand: React.PropTypes.bool.isRequired,
@@ -56,7 +55,6 @@ Row.propTypes = {
 };
 
 const createRow = function(data, columns, idField, canExpand, onExpandHandler) {
-  console.log('Create row for ' + canExpand);
   return (<Row
             key={'row-' + data[idField]}
             columns={columns}

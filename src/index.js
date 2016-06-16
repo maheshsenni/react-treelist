@@ -11,7 +11,7 @@ const OPTIONS = {
 
   columns: [{
     title: 'ID',
-    field: 'id',
+    field: 'key',
     width: 50
   }, {
     title: 'First Name',

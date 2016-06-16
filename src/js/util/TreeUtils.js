@@ -19,4 +19,11 @@ const getRootParents = function(data, parentIdField) {
   });
 };
 
-export { getRowsWithChildren, getRootParents };
+const getChildren = function(parent, data, idField, parentIdField) {
+  const parentId = parent[idField];
+  return data.filter((d) => {
+    return d[parentIdField] === parentId;
+  });
+};
+
+export { getRowsWithChildren, getRootParents, getChildren };
