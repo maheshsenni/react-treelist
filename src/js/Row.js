@@ -52,15 +52,17 @@ class Row extends React.Component {
 Row.propTypes = {
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.object.isRequired,
+  level: React.PropTypes.number.isRequired,
   canExpand: React.PropTypes.bool.isRequired,
   onExpandToggle: React.PropTypes.func
 };
 
-const createRow = function(data, columns, idField, canExpand, onExpandToggleHandler) {
+const createRow = function(data, level, columns, idField, canExpand, onExpandToggleHandler) {
   return (<Row
             key={'row-' + data[idField]}
             columns={columns}
             data={data}
+            level={level}
             canExpand={canExpand}
             onExpandToggle={onExpandToggleHandler}></Row>);
 }

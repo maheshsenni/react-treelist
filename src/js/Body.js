@@ -1,7 +1,7 @@
 import '../css/body.css';
 import React from 'react';
 import Colgroup from './Colgroup';
-import { Row, createRow, ROW_EXPAND, ROW_COLLAPSE } from './Row';
+import { Row, createRow, ROW_EXPAND } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
 
 const _isExpanded = function(rowId, expandedRows) {
@@ -27,21 +27,24 @@ class Body extends React.Component {
     
     const rows = [];
     rootParents.forEach((d) => {
-      rows.push(...this.makeRowsRecursive(d, metadata, columns, idField, parentIdField));
+      // parent rows start at level 0
+      rows.push(...this.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField));
     });
     console.log('make rows ' + rows.length);
     return rows;
   }
 
-  makeRowsRecursive(row, metadata, columns, idField, parentIdField) {
+  makeRowsRecursive(row, level, metadata, columns, idField, parentIdField) {
     const rows = [];
     const canExpand = row[idField] in metadata;
-    // push the parent row first    
-    rows.push(createRow(row, columns, idField, canExpand, this.handleExpandToggle));
+    // push the parent row first
+    rows.push(createRow(row, level, columns, idField, canExpand, this.handleExpandToggle));
+    // children in next level for indentation
+    const nextLevel = ++level;
     if (canExpand && _isExpanded(row[idField], this.state.expandedRows)) {
       let children = getChildren(row, this.props.data, idField, parentIdField);
       children.forEach((d) => {
-        rows.push(...this.makeRowsRecursive(d, metadata, columns, idField, parentIdField));
+        rows.push(...this.makeRowsRecursive(d, nextLevel, metadata, columns, idField, parentIdField));
       });
     }
     return rows;
