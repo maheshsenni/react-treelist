@@ -21,7 +21,7 @@ class TreeGrid extends React.Component {
     const metadata = getRowsWithChildren(data, id, parentId);
     console.timeEnd('METADATA');
 
-    console.log(metadata);
+    console.log('METADATA', metadata);
 
     return (
       <div className='tgrid'>

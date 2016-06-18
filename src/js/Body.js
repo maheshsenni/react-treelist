@@ -17,20 +17,22 @@ class Body extends React.Component {
     this.state = {
       expandedRows: []
     };
+    this.rootParents = null;
   }
 
   makeRows(data, metadata, columns, idField, parentIdField) {
     // start with first level records
-    console.time('ROOT_PARENTS');
-    const rootParents = getRootParents(data, parentIdField);
-    console.timeEnd('ROOT_PARENTS');
+    if (this.rootParents === null) {
+      console.time('ROOT_PARENTS');
+      this.rootParents = getRootParents(data, parentIdField);
+      console.timeEnd('ROOT_PARENTS');
+    }
     
     const rows = [];
-    rootParents.forEach((d) => {
+    this.rootParents.forEach((d) => {
       // parent rows start at level 0
       rows.push(...this.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField));
     });
-    console.log('make rows ' + rows.length);
     return rows;
   }
 
@@ -51,15 +53,24 @@ class Body extends React.Component {
   }
 
   handleExpandToggle(row, expandOrCollapse) {
+    const rowId = row[this.props.idField];
+
     if (expandOrCollapse === ROW_EXPAND) {
       this.setState({
-        expandedRows: [...this.state.expandedRows, row[this.props.idField]]
+        expandedRows: [...this.state.expandedRows, rowId]
       });
     } else {
-      const rowIndex = this.state.expandedRows.indexOf(row[this.props.idField]);
-      this.state.expandedRows.splice(rowIndex, 1);
+      // remove collapsed row and all it's children
+      const children = this.props.metadata[rowId];
+      const expandedRows = this.state.expandedRows.filter(function(r) {
+        if (r === rowId) {
+          return false;
+        } else {
+          return children.indexOf(r) < 0;
+        }
+      });
       this.setState({
-        expandedRows: this.state.expandedRows
+        expandedRows: expandedRows
       });
     }
   }

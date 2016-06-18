@@ -16,7 +16,8 @@ class RowIndent extends React.Component {
         indentDummies.push(
           <span
             key={reactKey + '-indent-' + i}
-            className='row-indent'></span>
+            className='row-indent'>
+          </span>
         );
       }
     }
