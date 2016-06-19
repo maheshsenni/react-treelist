@@ -5,6 +5,37 @@ import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
 
 class TreeGrid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.displayName = 'TreeGrid';
+    this.handleSort = this.handleSort.bind(this);
+    this.state = {
+      sortedColumns: {}
+    };
+  }
+
+  handleSort(column) {
+    if (column.field in this.state.sortedColumns) {
+      // toggle sorting
+      const sortDir = this.state.sortedColumns[column.field];
+      if (sortDir === 'asc') {
+        this.state.sortedColumns[column.field] = 'desc';
+      } else if (sortDir === 'desc') {
+        // remove sorting if it is already sorted by descending order
+        delete this.state.sortedColumns[column.field];
+      }
+      this.setState({
+        sortedColumns: this.state.sortedColumns
+      });
+    } else {
+      // sort column in ascending order
+      this.state.sortedColumns[column.field] = 'asc';
+      this.setState({
+        sortedColumns: this.state.sortedColumns
+      });
+    }
+  }
+
   render() {
     let { columns, id, parentId } = this.props.options;
     const { data } = this.props;
@@ -25,7 +56,11 @@ class TreeGrid extends React.Component {
 
     return (
       <div className='tgrid'>
-        <Header columns={columns}></Header>
+        <Header
+          columns={columns}
+          onSort={this.handleSort}
+          sortedColumns={this.state.sortedColumns}>
+        </Header>
         <Body
           columns={columns}
           data={data}

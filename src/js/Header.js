@@ -1,25 +1,33 @@
 import React from 'react';
 import '../css/header.css';
 
-import ColumnHeader from './ColumnHeader';
+import HeaderCell from './HeaderCell';
 import Colgroup from './Colgroup';
 import ColumnResizeHandler from './ColumnResizeHandler';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
+    this.displayName = 'Header';
   }
 
   _makeTableHeaders(columns) {
-    const columnHeaders = columns.map(function(col) {
-      return <ColumnHeader key={col.title} title={col.title}></ColumnHeader>
+    const headerCells = columns.map((col, index) => {
+      return (
+        <HeaderCell
+          key={'colh-' + index}
+          column={col}
+          sort={this.props.sortedColumns[col.field]}
+          onSort={this.props.onSort}>
+        </HeaderCell>
+      );
     });
-    return columnHeaders;
+    return headerCells;
   }
 
   render() {
     const { columns } = this.props;
-    const columnHeaders = this._makeTableHeaders(columns);
+    const headerCells = this._makeTableHeaders(columns);
 
     return (
       <div className='tgrid-header-wrapper'>
@@ -27,7 +35,7 @@ class Header extends React.Component {
           <Colgroup columns={columns}></Colgroup>
           <thead>
             <tr>
-              {columnHeaders}
+              {headerCells}
             </tr>
           </thead>
         </table>
@@ -36,5 +44,11 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = {
+  columns: React.PropTypes.array.isRequired,
+  onSort: React.PropTypes.func.isRequired,
+  sortedColumns: React.PropTypes.object.isRequired
+};
 
 export default Header;

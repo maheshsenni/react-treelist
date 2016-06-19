@@ -1,0 +1,25 @@
+.tgrid-column-header {
+  padding: 0.5em 0.75em;
+  color: #a8a8a8;
+  font-weight: normal;
+  border-right: 1px solid #e6e6e6;
+  text-align: left;
+}
+
+.i-sort-asc {
+  transform: rotate(90deg);
+  display: inline-block;
+  color: red;
+  margin-left: 3px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.i-sort-desc {
+  transform: rotate(-90deg);
+  display: inline-block;
+  color: red;
+  margin-left: 3px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
