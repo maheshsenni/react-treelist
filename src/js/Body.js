@@ -17,19 +17,14 @@ class Body extends React.Component {
     this.state = {
       expandedRows: []
     };
-    this.rootParents = null;
   }
 
   makeRows(data, metadata, columns, idField, parentIdField) {
     // start with first level records
-    if (this.rootParents === null) {
-      console.time('ROOT_PARENTS');
-      this.rootParents = getRootParents(data, parentIdField);
-      console.timeEnd('ROOT_PARENTS');
-    }
+    const rootParents = getRootParents(data, parentIdField);
     
     const rows = [];
-    this.rootParents.forEach((d) => {
+    rootParents.forEach((d) => {
       // parent rows start at level 0
       rows.push(...this.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField));
     });

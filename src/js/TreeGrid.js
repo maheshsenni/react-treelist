@@ -4,6 +4,17 @@ import Header from './Header';
 import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
 
+import { sortBy } from 'lodash';
+
+function sort(data, sortKey, sortDir) {
+  const newData = sortBy(data, function(o) { return o[sortKey]; });
+  if (sortDir === 'asc') {
+    return newData;
+  } else {
+    return newData.reverse();
+  }
+}
+
 class TreeGrid extends React.Component {
   constructor(props) {
     super(props);
@@ -39,6 +50,16 @@ class TreeGrid extends React.Component {
   render() {
     let { columns, id, parentId } = this.props.options;
     const { data } = this.props;
+    // use intial data from props by default
+    let renderData = data;
+    // check if sort is applied in any of the columns
+    const sortKeys = Object.keys(this.state.sortedColumns);
+    if (sortKeys.length > 0) {
+      const sortKey = sortKeys[0];
+      const sortDir = this.state.sortedColumns[sortKey];
+      console.log('Sorting by ' + sortKey);
+      renderData = sort(data, sortKey, sortDir);
+    }
 
     // assign defaults
     if (!id) {
@@ -48,11 +69,7 @@ class TreeGrid extends React.Component {
       parentId = 'parentId';
     }
 
-    console.time('METADATA');
-    const metadata = getRowsWithChildren(data, id, parentId);
-    console.timeEnd('METADATA');
-
-    console.log('METADATA', metadata);
+    const metadata = getRowsWithChildren(renderData, id, parentId);
 
     return (
       <div className='tgrid'>
@@ -63,7 +80,7 @@ class TreeGrid extends React.Component {
         </Header>
         <Body
           columns={columns}
-          data={data}
+          data={renderData}
           metadata={metadata}
           idField={id}
           parentIdField={parentId}>
