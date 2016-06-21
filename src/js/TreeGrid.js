@@ -3,14 +3,18 @@ import React from 'react';
 import Header from './Header';
 import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
+import { getFilteredData } from './util/DataUtils';
+import FilterWrapper from './FilterWrapper';
 
 class TreeGrid extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'TreeGrid';
     this.handleSort = this.handleSort.bind(this);
+    this.applyFilter = this.applyFilter.bind(this);
     this.state = {
-      sortedColumns: {}
+      sortedColumns: {},
+      filters: {}
     };
   }
 
@@ -36,6 +40,12 @@ class TreeGrid extends React.Component {
     }
   }
 
+  applyFilter(field, value) {
+    this.setState({
+      filters: { [field]: value }
+    });
+  }
+
   render() {
     let { columns, id, parentId } = this.props.options;
     const { data } = this.props;
@@ -48,14 +58,16 @@ class TreeGrid extends React.Component {
       parentId = 'parentId';
     }
 
-    console.time('METADATA');
-    const metadata = getRowsWithChildren(data, id, parentId);
-    console.timeEnd('METADATA');
-
-    console.log('METADATA', metadata);
+    let renderData = data;
+    if (Object.keys(this.state.filters).length > 0) {
+      renderData = getFilteredData(data, this.state.filters, id, parentId);
+    }
+    
+    const metadata = getRowsWithChildren(renderData, id, parentId);
 
     return (
       <div className='tgrid'>
+        <FilterWrapper columns={columns} onFilter={this.applyFilter}></FilterWrapper>
         <Header
           columns={columns}
           onSort={this.handleSort}
@@ -63,7 +75,7 @@ class TreeGrid extends React.Component {
         </Header>
         <Body
           columns={columns}
-          data={data}
+          data={renderData}
           metadata={metadata}
           idField={id}
           parentIdField={parentId}>

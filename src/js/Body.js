@@ -1,7 +1,7 @@
 import '../css/body.css';
 import React from 'react';
 import Colgroup from './Colgroup';
-import { Row, createRow, ROW_EXPAND } from './Row';
+import { Row, createRow } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
 
 const _isExpanded = function(rowId, expandedRows) {
@@ -17,19 +17,13 @@ class Body extends React.Component {
     this.state = {
       expandedRows: []
     };
-    this.rootParents = null;
   }
 
   makeRows(data, metadata, columns, idField, parentIdField) {
     // start with first level records
-    if (this.rootParents === null) {
-      console.time('ROOT_PARENTS');
-      this.rootParents = getRootParents(data, parentIdField);
-      console.timeEnd('ROOT_PARENTS');
-    }
-    
+    const rootParents = getRootParents(data, parentIdField);
     const rows = [];
-    this.rootParents.forEach((d) => {
+    rootParents.forEach((d) => {
       // parent rows start at level 0
       rows.push(...this.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField));
     });
@@ -40,7 +34,9 @@ class Body extends React.Component {
     const rows = [];
     const canExpand = row[idField] in metadata;
     // push the parent row first
-    rows.push(createRow(row, level, columns, idField, canExpand, this.handleExpandToggle));
+    rows.push(createRow(row, level, columns, idField,
+      canExpand, this.state.expandedRows.indexOf(row[idField]) > -1,
+      this.handleExpandToggle));
     // children in next level for indentation
     const nextLevel = ++level;
     if (canExpand && _isExpanded(row[idField], this.state.expandedRows)) {
@@ -52,14 +48,10 @@ class Body extends React.Component {
     return rows;
   }
 
-  handleExpandToggle(row, expandOrCollapse) {
+  handleExpandToggle(row) {
     const rowId = row[this.props.idField];
-
-    if (expandOrCollapse === ROW_EXPAND) {
-      this.setState({
-        expandedRows: [...this.state.expandedRows, rowId]
-      });
-    } else {
+    if (this.state.expandedRows.indexOf(rowId) > -1) {
+      // expanded and has to be collapsed
       // remove collapsed row and all it's children
       const children = this.props.metadata[rowId];
       const expandedRows = this.state.expandedRows.filter(function(r) {
@@ -71,6 +63,11 @@ class Body extends React.Component {
       });
       this.setState({
         expandedRows: expandedRows
+      });
+    } else {
+      // collapsed and has to be expanded
+      this.setState({
+        expandedRows: [...this.state.expandedRows, rowId]
       });
     }
   }

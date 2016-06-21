@@ -26,4 +26,53 @@ const getChildren = function(parent, data, idField, parentIdField) {
   });
 };
 
-export { getRowsWithChildren, getRootParents, getChildren };
+const getTree = function(data, idField, parentIdField) {
+  // first pass - make all objects accessible via O(1)
+  const all = {};
+  data.forEach((d) => {
+    all[d[idField]] = {
+      data: d,
+      children: [],
+      parent: d[parentIdField]
+    };
+  });
+  // add child and parent info to the objects
+  Object.keys(all).forEach((id) => {
+      let item = all[id];
+      if (typeof item.data[parentIdField] === 'undefined' ||
+        item.data[parentIdField] === null) {
+        item.parent = null;
+      } else if (item.data[parentIdField] in all) {
+        let parent = all[item.data[parentIdField]];
+        parent.children.push(item.data[idField]);
+      }
+  });
+  return all;
+};
+
+const getFilteredDisplayRows = function(subset, tree, idField, parentIdField) {
+  const ids = [];
+  const rows = [];
+  let temp;
+  subset.forEach(function(d) {
+    temp = d;
+    ids.push(d[idField]);
+    rows.push(d);
+    while(tree[temp[idField]].parent !== null) {
+      temp = tree[tree[temp[idField]].parent].data;
+      if (ids.indexOf(temp[idField]) < 0) {
+        ids.push(temp[idField]);
+        rows.push(temp);
+      }
+    }
+  });
+  return rows;
+};
+
+export {
+  getRowsWithChildren,
+  getRootParents,
+  getChildren,
+  getTree,
+  getFilteredDisplayRows
+};
