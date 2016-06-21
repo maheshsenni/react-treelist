@@ -6,6 +6,17 @@ import { getRowsWithChildren } from './util/TreeUtils';
 import { getFilteredData } from './util/DataUtils';
 import FilterWrapper from './FilterWrapper';
 
+import { sortBy } from 'lodash';
+
+function sort(data, sortKey, sortDir) {
+  const newData = sortBy(data, function(o) { return o[sortKey]; });
+  if (sortDir === 'asc') {
+    return newData;
+  } else {
+    return newData.reverse();
+  }
+}
+
 class TreeGrid extends React.Component {
   constructor(props) {
     super(props);
@@ -58,11 +69,20 @@ class TreeGrid extends React.Component {
       parentId = 'parentId';
     }
 
+    // use intial data from props by default
     let renderData = data;
     if (Object.keys(this.state.filters).length > 0) {
       renderData = getFilteredData(data, this.state.filters, id, parentId);
     }
     
+    // check if sort is applied in any of the columns
+    const sortKeys = Object.keys(this.state.sortedColumns);
+    if (sortKeys.length > 0) {
+      const sortKey = sortKeys[0];
+      const sortDir = this.state.sortedColumns[sortKey];
+      console.log('Sorting by ' + sortKey);
+      renderData = sort(renderData, sortKey, sortDir);
+    }
     const metadata = getRowsWithChildren(renderData, id, parentId);
 
     return (

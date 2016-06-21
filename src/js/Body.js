@@ -22,6 +22,7 @@ class Body extends React.Component {
   makeRows(data, metadata, columns, idField, parentIdField) {
     // start with first level records
     const rootParents = getRootParents(data, parentIdField);
+
     const rows = [];
     rootParents.forEach((d) => {
       // parent rows start at level 0

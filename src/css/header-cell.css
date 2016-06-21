@@ -6,7 +6,7 @@
   text-align: left;
 }
 
-.i-sort-asc {
+.i-sort-desc {
   transform: rotate(90deg);
   display: inline-block;
   color: red;
@@ -15,7 +15,7 @@
   font-weight: bold;
 }
 
-.i-sort-desc {
+.i-sort-asc {
   transform: rotate(-90deg);
   display: inline-block;
   color: red;
