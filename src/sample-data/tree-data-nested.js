@@ -13,7 +13,7 @@ export const DATA = [{ key: 0,
     employeeId: 7473,
     parentKey: 0
 }, { key: 4,
-    firstName: 'Parent 4',
+    firstName: 'Parent 0',
     lastName: 'Name 4',
     employeeId: 5560
 }, { key: 5,
