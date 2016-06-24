@@ -1,0 +1,7 @@
+.resize-handle {
+  position: absolute;
+  cursor: ew-resize;
+  display: inline-block;
+  background-color: yellow;
+  z-index: 1;
+}

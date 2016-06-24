@@ -1,9 +1,14 @@
 .tgrid-column-header {
-  padding: 0.5em 0.75em;
-  color: #a8a8a8;
-  font-weight: normal;
   border-right: 1px solid #e6e6e6;
   text-align: left;
+  position: relative;
+}
+
+.tgrid-column-header-text {
+  padding: 0.5em 0.75em;
+  display: inline-block;
+  color: #a8a8a8;
+  font-weight: normal;
 }
 
 .i-sort-desc {
@@ -22,4 +27,12 @@
   margin-left: 3px;
   font-size: 0.7em;
   font-weight: bold;
+}
+
+.resize-indicator {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
 }
