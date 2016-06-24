@@ -2,10 +2,14 @@ import { getTree, getFilteredDisplayRows } from './TreeUtils';
 import { sortBy } from 'lodash';
 
 const getFilteredData = function(data, filters, idField, parentIdField) {
-  const filterField = Object.keys(filters)[0];
-  let filteredData = data.filter(function(d) {
-    return d[filterField].startsWith(filters[filterField]);
-  });
+  let filteredData = data;
+
+  for(let filterKey in filters) {
+    let filterValue = filters[filterKey];
+    filteredData = filteredData.filter(function(d) {
+      return d[filterKey].startsWith(filters[filterKey]);
+    });
+  }
 
   const tree = getTree(data, idField, parentIdField);
   const displayRows = getFilteredDisplayRows(filteredData, tree, idField, parentIdField);
@@ -15,8 +19,6 @@ const getFilteredData = function(data, filters, idField, parentIdField) {
 // Sort on multiple fields solution from
 // http://blog.falafel.com/nifty-underscore-tricks-sorting-by-multiple-properties-with-underscore/
 const getSortedData = function(data, sortOptions) {
-  console.log(sortOptions);
-
   const sortKeys = Object.keys(sortOptions);
   sortKeys.reverse();
 

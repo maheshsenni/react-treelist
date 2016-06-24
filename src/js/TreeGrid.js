@@ -12,6 +12,7 @@ class TreeGrid extends React.Component {
     this.displayName = 'TreeGrid';
     this.handleSort = this.handleSort.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
     this.state = {
       sortedColumns: {},
       filters: {}
@@ -42,7 +43,16 @@ class TreeGrid extends React.Component {
 
   applyFilter(field, value) {
     this.setState({
-      filters: { [field]: value }
+      filters: {
+        ...this.state.filters,
+        [field]: value
+      }
+    });
+  }
+
+  clearFilters() {
+    this.setState({
+      filters: {}
     });
   }
 
@@ -75,7 +85,11 @@ class TreeGrid extends React.Component {
 
     return (
       <div className='tgrid'>
-        <FilterWrapper columns={columns} onFilter={this.applyFilter}></FilterWrapper>
+        <FilterWrapper
+          columns={columns}
+          onFilter={this.applyFilter}
+          onClearAll={this.clearFilters}>
+        </FilterWrapper>
         <Header
           columns={columns}
           onSort={this.handleSort}

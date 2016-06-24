@@ -13,6 +13,7 @@ class FilterWrapper extends React.Component {
     this.onTextChange = this.onTextChange.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
+    this.clearAll = this.clearAll.bind(this);
   }
 
   onTextChange(event) {
@@ -31,6 +32,10 @@ class FilterWrapper extends React.Component {
     this.props.onFilter(this.state.selectedField, this.state.filterText);
   }
 
+  clearAll() {
+    this.props.onClearAll();
+  }
+
   render() {
     return (
       <div>
@@ -43,6 +48,7 @@ class FilterWrapper extends React.Component {
         </select>
         <input type='text' onChange={this.onTextChange} value={this.state.filterText}/>
         <button onClick={this.applyFilter}>Apply</button>
+        <button onClick={this.clearAll}>Clear All</button>
       </div>
     );
   }
