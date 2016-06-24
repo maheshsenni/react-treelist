@@ -16,8 +16,8 @@ class HeaderCell extends Component {
   }
 
   onResizeMouseEnter() {
-    const boundingReact = this.refs.resizeIndicator.getBoundingClientRect();
-    this.props.onResizeEnter(this.props.column, boundingReact);
+    const boundingRect = this.refs.resizeIndicator.getBoundingClientRect();
+    this.props.onResizeEnter(this.props.column, boundingRect);
   }
 
   render() {

@@ -1,5 +1,6 @@
 .tgrid-header-wrapper {
   background-color: #fafafa;
+  position: relative;
 }
 
 .tgrid-header-table {

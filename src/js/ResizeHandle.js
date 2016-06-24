@@ -6,18 +6,38 @@ class ResizeHandle extends Component {
     super(props);
     this.displayName = 'ResizeHandle';
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onDrag = this.onDrag.bind(this);
+
+    const { left, width, height } = this.props;
+    this.state = {
+      top: 0,
+      left: left,
+      width: width,
+      height: height
+    };
   }
 
   onMouseLeave() {
     this.props.onLeave();
   }
 
+  onDrag() {
+    console.log('Dragged');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      left: nextProps.left
+    });
+  }
+
   render() {
     return (
-      <div
+      <div draggable='true'
         className='resize-handle'
-        style={{...this.props}}
-        onMouseLeave={this.onMouseLeave}></div>
+        style={{...this.state}}
+        onMouseLeave={this.onMouseLeave}
+        onDrag={this.onDrag}></div>
     );
   }
 }
