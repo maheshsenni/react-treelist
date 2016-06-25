@@ -1,0 +1,7 @@
+.resize-hint {
+  width: 2px;
+  background-color: #ccc;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+}

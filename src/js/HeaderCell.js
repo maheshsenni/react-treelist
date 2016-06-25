@@ -17,7 +17,8 @@ class HeaderCell extends Component {
 
   onResizeMouseEnter() {
     const boundingRect = this.refs.resizeIndicator.getBoundingClientRect();
-    this.props.onResizeEnter(this.props.column, boundingRect);
+    const currentWidth = this.refs.header.offsetWidth;
+    this.props.onResizeEnter(this.props.column, boundingRect, currentWidth);
   }
 
   render() {
@@ -32,6 +33,7 @@ class HeaderCell extends Component {
 
     return (
       <th
+        ref='header'
         className='tgrid-column-header'
         onClick={this.handleClick}>
         <span className='tgrid-column-header-text'>{this.props.column.title}</span>

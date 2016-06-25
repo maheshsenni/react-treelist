@@ -1,26 +1,32 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import '../css/header.css';
 
 import HeaderCell from './HeaderCell';
 import Colgroup from './Colgroup';
-import ResizeHandle from './ResizeHandle';
+import ResizeGhost from './ResizeGhost';
+import ResizeHint from './ResizeHint';
 
-class Header extends React.Component {
+class Header extends Component {
   constructor(props) {
     super(props);
     this.displayName = 'Header';
-    // state
+
     this.state = {
-      showResizeHandle: false,
+      showResizeGhost: false,
+      showResizeHint: false,
       resizeColumn: null,
-      resizeHandlePos: null
+      resizeGhostPos: null
     };
 
-    this.attactResizeHandle = this.attactResizeHandle.bind(this);
-    this.removeResizeHandle = this.removeResizeHandle.bind(this);
+    this.showResizeGhost = this.showResizeGhost.bind(this);
+    this.removeResizeGhost = this.removeResizeGhost.bind(this);
+    this.onResizeStart = this.onResizeStart.bind(this);
+    this.onResize = this.onResize.bind(this);
+    this.onResizeEnd = this.onResizeEnd.bind(this);
   }
 
-  attactResizeHandle(column, indicatorPos) {
+  showResizeGhost(column, indicatorPos, currentWidth) {
+    this._currentWidth = currentWidth;
     const headerOffsetLeft = this.refs.header.offsetLeft;
     const handlePos = {
       width: indicatorPos.width,
@@ -29,18 +35,53 @@ class Header extends React.Component {
       left: indicatorPos.left - headerOffsetLeft
     };
     this.setState({
-      showResizeHandle: true,
+      showResizeGhost: true,
       resizeColumn: column,
-      resizeHandlePos: handlePos
+      resizeGhostPos: handlePos
     });
   }
 
-  removeResizeHandle() {
+  removeResizeGhost() {
     this.setState({
-      showResizeHandle: false,
+      showResizeGhost: false,
       resizeColumn: null,
-      resizeHandlePos: null
+      resizeGhostPos: null
     });
+  }
+
+  onResizeStart(clientX) {
+    const headerOffsetLeft = this.refs.header.offsetLeft;
+    this._resizeStartX = clientX - headerOffsetLeft;
+    this.setState({
+      showResizeHint: true,
+      resizeHintLeft: this._resizeStartX
+    });
+  }
+
+  onResize(movedX) {
+    let left = this._resizeStartX + movedX;
+    const headerWidth = this.refs.header.offsetWidth;
+
+    if (left < 0) {
+      left = 0;
+    } else if (left > headerWidth) {
+      left = headerWidth;
+    }
+
+    this.setState({
+      resizeHintLeft: left
+    });
+  }
+
+  onResizeEnd(movedX) {
+    const newWidth = this._currentWidth + movedX;
+    this.setState({
+      showResizeGhost: false,
+      showResizeHint: false,
+      resizeColumn: null,
+      resizeGhostPos: null
+    });
+    this.props.onResize(this.state.resizeColumn, newWidth);
   }
 
   _makeTableHeaders(columns) {
@@ -51,7 +92,7 @@ class Header extends React.Component {
           column={col}
           sort={this.props.sortedColumns[col.field]}
           onSort={this.props.onSort}
-          onResizeEnter={this.attactResizeHandle}>
+          onResizeEnter={this.showResizeGhost}>
         </HeaderCell>
       );
     });
@@ -62,22 +103,33 @@ class Header extends React.Component {
     const { columns } = this.props;
     const headerCells = this._makeTableHeaders(columns);
 
-    let resizeHandle = null;
-    if (this.state.showResizeHandle) {
-      resizeHandle = (
-        <ResizeHandle
-          height={this.state.resizeHandlePos.height}
-          width={this.state.resizeHandlePos.width}
-          top={this.state.resizeHandlePos.top}
-          left={this.state.resizeHandlePos.left}
-          onLeave={this.removeResizeHandle}>
-        </ResizeHandle>
+    let resizeGhost = null;
+    if (this.state.showResizeGhost) {
+      resizeGhost = (
+        <ResizeGhost
+          height={this.state.resizeGhostPos.height}
+          width={this.state.resizeGhostPos.width}
+          top={this.state.resizeGhostPos.top}
+          left={this.state.resizeGhostPos.left}
+          onLeave={this.removeResizeGhost}
+          onDragStart={this.onResizeStart}
+          onDrag={this.onResize}
+          onDragEnd={this.onResizeEnd}>
+        </ResizeGhost>
+      );
+    }
+
+    let resizeHint = null;
+    if (this.state.showResizeHint) {
+      resizeHint = (
+        <ResizeHint left={this.state.resizeHintLeft}></ResizeHint>
       );
     }
 
     return (
       <div className='tgrid-header-wrapper' ref='header'>
-        {resizeHandle}
+        {resizeGhost}
+        {resizeHint}
         <table className='tgrid-header-table'>
           <Colgroup columns={columns}></Colgroup>
           <thead>
@@ -92,9 +144,10 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  columns: React.PropTypes.array.isRequired,
-  onSort: React.PropTypes.func.isRequired,
-  sortedColumns: React.PropTypes.object.isRequired
+  columns: PropTypes.array.isRequired,
+  onSort: PropTypes.func.isRequired,
+  sortedColumns: PropTypes.object.isRequired,
+  onResize: PropTypes.func.isRequired
 };
 
 export default Header;

@@ -9,6 +9,10 @@
   display: inline-block;
   color: #a8a8a8;
   font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .i-sort-desc {
@@ -30,7 +34,6 @@
 }
 
 .resize-indicator {
-  background-color: red;
   position: absolute;
   top: 0;
   bottom: 0;

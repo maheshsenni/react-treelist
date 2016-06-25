@@ -1,21 +1,27 @@
 import '../css/treegrid.css';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import Header from './Header';
 import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
 import { getFilteredData, getSortedData } from './util/DataUtils';
 import FilterWrapper from './FilterWrapper';
 
-class TreeGrid extends React.Component {
+class TreeGrid extends Component {
   constructor(props) {
     super(props);
     this.displayName = 'TreeGrid';
+
     this.handleSort = this.handleSort.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
     this.clearFilters = this.clearFilters.bind(this);
+    this.resizeColumn = this.resizeColumn.bind(this);
+
+    const { columns } = this.props;
+
     this.state = {
       sortedColumns: {},
-      filters: {}
+      filters: {},
+      columns: columns
     };
   }
 
@@ -56,9 +62,22 @@ class TreeGrid extends React.Component {
     });
   }
 
+  resizeColumn(column, width) {
+    const newColumn = {...column, width};
+    this.state.columns.forEach((c) => {
+      if (c.field === column.field) {
+        column.width = width;
+      }
+    });
+    this.setState({
+      columns: this.state.columns
+    });
+  }
+
   render() {
-    let { columns, id, parentId } = this.props.options;
+    let { id, parentId } = this.props;
     const { data } = this.props;
+    const { columns } = this.state;
 
     // assign defaults
     if (!id) {
@@ -93,7 +112,8 @@ class TreeGrid extends React.Component {
         <Header
           columns={columns}
           onSort={this.handleSort}
-          sortedColumns={this.state.sortedColumns}>
+          sortedColumns={this.state.sortedColumns}
+          onResize={this.resizeColumn}>
         </Header>
         <Body
           columns={columns}
@@ -108,8 +128,10 @@ class TreeGrid extends React.Component {
 }
 
 TreeGrid.propTypes = {
-  data: React.PropTypes.array.isRequired,
-  options: React.PropTypes.object.isRequired
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
+  id: PropTypes.string,
+  parentId: PropTypes.string
 }
 
 export default TreeGrid;
