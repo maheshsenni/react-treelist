@@ -36,8 +36,10 @@ class HeaderCell extends Component {
         ref='header'
         className='tgrid-column-header'
         onClick={this.handleClick}>
-        <span className='tgrid-column-header-text'>{this.props.column.title}</span>
-        {sortIndicator}
+        <span className='tgrid-column-header-text'>
+          {this.props.column.title}
+          {sortIndicator}
+        </span>
         <div className='resize-indicator'
           ref='resizeIndicator'
           style={{width: RESIZE_INDICATOR_WIDTH}}
