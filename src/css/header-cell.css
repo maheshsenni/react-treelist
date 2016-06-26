@@ -33,6 +33,21 @@
   font-weight: bold;
 }
 
+.i-arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #aaa;
+}
+
+.i-column-menu {
+  display: inline-block;
+  float: right;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
 .resize-indicator {
   position: absolute;
   top: 0;

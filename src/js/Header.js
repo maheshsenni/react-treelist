@@ -5,6 +5,7 @@ import HeaderCell from './HeaderCell';
 import Colgroup from './Colgroup';
 import ResizeGhost from './ResizeGhost';
 import ResizeHint from './ResizeHint';
+import ColumnOptions from './ColumnOptions';
 
 class Header extends Component {
   constructor(props) {
@@ -15,7 +16,10 @@ class Header extends Component {
       showResizeGhost: false,
       showResizeHint: false,
       resizeColumn: null,
-      resizeGhostPos: null
+      resizeGhostPos: null,
+      showColumnOptions: false,
+      columnOptionsPos: null,
+      columnOptionsColumn: null
     };
 
     this.showResizeGhost = this.showResizeGhost.bind(this);
@@ -23,6 +27,41 @@ class Header extends Component {
     this.onResizeStart = this.onResizeStart.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onResizeEnd = this.onResizeEnd.bind(this);
+    this.onColumnOptionsClick = this.onColumnOptionsClick.bind(this);
+  }
+
+  onColumnOptionsClick(iconXPos, column) {
+    const headerOffsetLeft = this.refs.header.offsetLeft;
+    const columnOptionsLeft = iconXPos - headerOffsetLeft;
+    if (this.state.showColumnOptions) {
+      // check if different column
+      if (this.state.columnOptionsColumn.field !== column.field) {
+        // show options for the new column
+        this.showColumnOptions(columnOptionsLeft, column);
+      } else {
+        // hide column menu
+        this.hideColumnOptions();
+      }
+    } else {
+      // show column menu
+      this.showColumnOptions(columnOptionsLeft, column);
+    }
+  }
+
+  showColumnOptions(left, column) {
+    console.log('Column options to be shown or hidden ', left);
+    this.setState({
+      showColumnOptions: true,
+      columnOptionsLeft: left,
+      columnOptionsColumn: column
+    });
+  }
+
+  hideColumnOptions() {
+    this.setState({
+      showColumnOptions: false,
+      columnOptionsLeft: null
+    });
   }
 
   showResizeGhost(column, indicatorPos, currentWidth) {
@@ -92,7 +131,8 @@ class Header extends Component {
           column={col}
           sort={this.props.sortedColumns[col.field]}
           onSort={this.props.onSort}
-          onResizeEnter={this.showResizeGhost}>
+          onResizeEnter={this.showResizeGhost}
+          onColumnOptionsClick={this.onColumnOptionsClick}>
         </HeaderCell>
       );
     });
@@ -126,10 +166,20 @@ class Header extends Component {
       );
     }
 
+    let columnOptions = null
+    if (this.state.showColumnOptions) {
+      columnOptions = (
+        <ColumnOptions
+          left={this.state.columnOptionsLeft}>
+        </ColumnOptions>
+      );
+    }
+
     return (
       <div className='tgrid-header-wrapper' ref='header'>
         {resizeGhost}
         {resizeHint}
+        {columnOptions}
         <table className='tgrid-header-table'>
           <Colgroup columns={columns}></Colgroup>
           <thead>

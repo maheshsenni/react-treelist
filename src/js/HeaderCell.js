@@ -9,6 +9,7 @@ class HeaderCell extends Component {
     this.displayName = 'HeaderCell';
     this.handleClick = this.handleClick.bind(this);
     this.onResizeMouseEnter = this.onResizeMouseEnter.bind(this);
+    this.onColumnOptionsClick = this.onColumnOptionsClick.bind(this);
   }
 
   handleClick() {
@@ -19,6 +20,12 @@ class HeaderCell extends Component {
     const boundingRect = this.refs.resizeIndicator.getBoundingClientRect();
     const currentWidth = this.refs.header.offsetWidth;
     this.props.onResizeEnter(this.props.column, boundingRect, currentWidth);
+  }
+
+  onColumnOptionsClick(event) {
+    const iconRect = event.target.getBoundingClientRect();
+    this.props.onColumnOptionsClick(iconRect.left, this.props.column);
+    event.stopPropagation();
   }
 
   render() {
@@ -39,6 +46,9 @@ class HeaderCell extends Component {
         <span className='tgrid-column-header-text'>
           {this.props.column.title}
           {sortIndicator}
+          <span
+            className='i-arrow-down i-column-menu'
+            onClick={this.onColumnOptionsClick}></span>
         </span>
         <div className='resize-indicator'
           ref='resizeIndicator'
@@ -54,7 +64,8 @@ HeaderCell.propTypes = {
   column: PropTypes.object.isRequired,
   onSort: PropTypes.func.isRequired,
   sort: PropTypes.string,
-  onResizeEnter: PropTypes.func.isRequired
+  onResizeEnter: PropTypes.func.isRequired,
+  onColumnOptionsClick: PropTypes.func.isRequired
 };
 
 export default HeaderCell;
