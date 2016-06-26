@@ -25,26 +25,29 @@ class TreeGrid extends Component {
     };
   }
 
-  handleSort(column) {
-    if (column.field in this.state.sortedColumns) {
-      // toggle sorting
-      const sortDir = this.state.sortedColumns[column.field];
-      if (sortDir === 'asc') {
-        this.state.sortedColumns[column.field] = 'desc';
-      } else if (sortDir === 'desc') {
-        // remove sorting if it is already sorted by descending order
-        delete this.state.sortedColumns[column.field];
-      }
-      this.setState({
-        sortedColumns: this.state.sortedColumns
-      });
+  handleSort(field, sortDir) {
+    if (typeof sortDir === 'string') {
+      this.state.sortedColumns[field] = sortDir;
     } else {
-      // sort column in ascending order
-      this.state.sortedColumns[column.field] = 'asc';
-      this.setState({
-        sortedColumns: this.state.sortedColumns
-      });
+      // toggle sort dir if not specified explicitly
+      if (field in this.state.sortedColumns) {
+        // toggle sorting
+        const sortDir = this.state.sortedColumns[field];
+        if (sortDir === 'asc') {
+          this.state.sortedColumns[field] = 'desc';
+        } else if (sortDir === 'desc') {
+          // remove sorting if it is already sorted by descending order
+          delete this.state.sortedColumns[field];
+        }
+      } else {
+        // sort column in ascending order first time
+        this.state.sortedColumns[field] = 'asc';
+      }
     }
+    // apply changed sortedColumns to state
+    this.setState({
+      sortedColumns: this.state.sortedColumns
+    });
   }
 
   applyFilter(field, value) {
@@ -113,6 +116,7 @@ class TreeGrid extends Component {
           columns={columns}
           onSort={this.handleSort}
           sortedColumns={this.state.sortedColumns}
+          filters={this.state.filters}
           onResize={this.resizeColumn}>
         </Header>
         <Body

@@ -13,7 +13,7 @@ class HeaderCell extends Component {
   }
 
   handleClick() {
-    this.props.onSort(this.props.column);
+    this.props.onSort(this.props.column.field);
   }
 
   onResizeMouseEnter() {

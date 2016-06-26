@@ -19,7 +19,7 @@ class Header extends Component {
       resizeGhostPos: null,
       showColumnOptions: false,
       columnOptionsPos: null,
-      columnOptionsColumn: null
+      columnOptionsField: null
     };
 
     this.showResizeGhost = this.showResizeGhost.bind(this);
@@ -35,7 +35,7 @@ class Header extends Component {
     const columnOptionsLeft = iconXPos - headerOffsetLeft;
     if (this.state.showColumnOptions) {
       // check if different column
-      if (this.state.columnOptionsColumn.field !== column.field) {
+      if (this.state.columnOptionsField !== column.field) {
         // show options for the new column
         this.showColumnOptions(columnOptionsLeft, column);
       } else {
@@ -50,17 +50,19 @@ class Header extends Component {
 
   showColumnOptions(left, column) {
     console.log('Column options to be shown or hidden ', left);
+    const { sortedColumns, filters } = this.props;
     this.setState({
       showColumnOptions: true,
       columnOptionsLeft: left,
-      columnOptionsColumn: column
+      columnOptionsField: column.field
     });
   }
 
   hideColumnOptions() {
     this.setState({
       showColumnOptions: false,
-      columnOptionsLeft: null
+      columnOptionsLeft: null,
+      columnOptionsField: null
     });
   }
 
@@ -140,7 +142,7 @@ class Header extends Component {
   }
 
   render() {
-    const { columns } = this.props;
+    const { columns, sortedColumns, filters } = this.props;
     const headerCells = this._makeTableHeaders(columns);
 
     let resizeGhost = null;
@@ -170,7 +172,11 @@ class Header extends Component {
     if (this.state.showColumnOptions) {
       columnOptions = (
         <ColumnOptions
-          left={this.state.columnOptionsLeft}>
+          left={this.state.columnOptionsLeft}
+          field={this.state.columnOptionsField}
+          sort={sortedColumns[this.state.columnOptionsField]}
+          filter={filters[this.state.columnOptionsField]}
+          onSort={this.props.onSort}>
         </ColumnOptions>
       );
     }
@@ -197,6 +203,7 @@ Header.propTypes = {
   columns: PropTypes.array.isRequired,
   onSort: PropTypes.func.isRequired,
   sortedColumns: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired,
   onResize: PropTypes.func.isRequired
 };
 

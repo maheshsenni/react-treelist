@@ -1,8 +1,22 @@
 .column-options {
-  border: 1px solid red;
-  display: inline-block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   width: 150px;
-  height: 150px;
   position: absolute;
   top: 100%;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+
+.column-options li {
+  padding: 0.5em;
+  color: #a8a8a8;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.column-options li:hover, .column-options li.active {
+  background-color: #fafafa;
+  color: black;
 }
