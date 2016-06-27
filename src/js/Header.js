@@ -28,6 +28,7 @@ class Header extends Component {
     this.onResize = this.onResize.bind(this);
     this.onResizeEnd = this.onResizeEnd.bind(this);
     this.onColumnOptionsClick = this.onColumnOptionsClick.bind(this);
+    this.hideColumnOptions = this.hideColumnOptions.bind(this);
   }
 
   onColumnOptionsClick(iconXPos, column) {
@@ -49,7 +50,6 @@ class Header extends Component {
   }
 
   showColumnOptions(left, column) {
-    console.log('Column options to be shown or hidden ', left);
     const { sortedColumns, filters } = this.props;
     this.setState({
       showColumnOptions: true,
@@ -176,7 +176,8 @@ class Header extends Component {
           field={this.state.columnOptionsField}
           sort={sortedColumns[this.state.columnOptionsField]}
           filter={filters[this.state.columnOptionsField]}
-          onSort={this.props.onSort}>
+          onSort={this.props.onSort}
+          hide={this.hideColumnOptions}>
         </ColumnOptions>
       );
     }
