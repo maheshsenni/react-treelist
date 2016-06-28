@@ -8,6 +8,8 @@ class ColumnOptions extends Component {
     this.displayName = 'ColumnOptions';
     this.handleSort = this.handleSort.bind(this);
     this.documentClickHandler = this.documentClickHandler.bind(this);
+    this.onFilterApply = this.onFilterApply.bind(this);
+    this.onFilterClear = this.onFilterClear.bind(this);
   }
 
   handleSort(dir, event) {
@@ -38,8 +40,16 @@ class ColumnOptions extends Component {
     document.removeEventListener('click', this.documentClickHandler, false);
   }
 
+  onFilterApply() {
+    console.log('On filter apply');
+  }
+
+  onFilterClear() {
+    console.log('On filter clear');
+  }
+
   render() {
-    const { left, sort, filter } = this.props;
+    const { left, sort, filter, dataType } = this.props;
 
     return (
       <ul className='column-options' style={{ left: left }} ref='container'>
@@ -51,7 +61,11 @@ class ColumnOptions extends Component {
           onClick={this.handleSort.bind(this, 'desc')}>Sort descending</li>
         <li className='filter-option'>
           Filter<i className='i-arrow-right'></i>
-          <FilterContainer></FilterContainer>
+          <FilterContainer
+            dataType={dataType}
+            onApply={this.onFilterApply}
+            onClear={this.onFilterClear}>
+          </FilterContainer>
         </li>
       </ul>
     );
@@ -61,6 +75,7 @@ class ColumnOptions extends Component {
 ColumnOptions.propTypes = {
   left: PropTypes.number.isRequired,
   field: PropTypes.string.isRequired,
+  dataType: PropTypes.string.isRequired,
   sort: PropTypes.string,
   filter: PropTypes.object,
   onSort: PropTypes.func.isRequired,

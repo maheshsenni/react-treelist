@@ -7,16 +7,20 @@ import {DATA} from './sample-data/tree-data-nested';
 const COLUMNS = [{
   title: 'ID',
   field: 'key',
+  type: 'number',
   width: 100
 }, {
   title: 'First Name',
-  field: 'firstName'
+  field: 'firstName',
+  type: 'string'
 }, {
   title: 'Last Name',
-  field: 'lastName'
+  field: 'lastName',
+  type: 'string'
 }, {
   title: 'Employee ID',
-  field: 'employeeId'
+  field: 'employeeId',
+  type: 'number'
 }];
 
 class App extends React.Component {

@@ -19,7 +19,7 @@ class Header extends Component {
       resizeGhostPos: null,
       showColumnOptions: false,
       columnOptionsPos: null,
-      columnOptionsField: null
+      columnOptions: null
     };
 
     this.showResizeGhost = this.showResizeGhost.bind(this);
@@ -36,7 +36,7 @@ class Header extends Component {
     const columnOptionsLeft = iconXPos - headerOffsetLeft;
     if (this.state.showColumnOptions) {
       // check if different column
-      if (this.state.columnOptionsField !== column.field) {
+      if (this.state.columnOptions.field !== column.field) {
         // show options for the new column
         this.showColumnOptions(columnOptionsLeft, column);
       } else {
@@ -54,7 +54,10 @@ class Header extends Component {
     this.setState({
       showColumnOptions: true,
       columnOptionsLeft: left,
-      columnOptionsField: column.field
+      columnOptions: {
+        field: column.field,
+        type: column.type
+      }
     });
   }
 
@@ -62,7 +65,7 @@ class Header extends Component {
     this.setState({
       showColumnOptions: false,
       columnOptionsLeft: null,
-      columnOptionsField: null
+      columnOptions: null
     });
   }
 
@@ -173,9 +176,10 @@ class Header extends Component {
       columnOptions = (
         <ColumnOptions
           left={this.state.columnOptionsLeft}
-          field={this.state.columnOptionsField}
-          sort={sortedColumns[this.state.columnOptionsField]}
-          filter={filters[this.state.columnOptionsField]}
+          field={this.state.columnOptions.field}
+          dataType={this.state.columnOptions.type}
+          sort={sortedColumns[this.state.columnOptions.field]}
+          filter={filters[this.state.columnOptions.field]}
           onSort={this.props.onSort}
           hide={this.hideColumnOptions}>
         </ColumnOptions>
