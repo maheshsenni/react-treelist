@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import '../css/column-options.css';
+import FilterContainer from'./FilterContainer';
 
 class ColumnOptions extends Component {
   constructor(props) {
@@ -48,6 +49,10 @@ class ColumnOptions extends Component {
         <li
           className={sort === 'desc' ? 'active' : null}
           onClick={this.handleSort.bind(this, 'desc')}>Sort descending</li>
+        <li className='filter-option'>
+          Filter<i className='i-arrow-right'></i>
+          <FilterContainer></FilterContainer>
+        </li>
       </ul>
     );
   }

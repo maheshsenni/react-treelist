@@ -1,3 +1,7 @@
 .tgrid {
   
 }
+
+.tgrid i {
+  display: inline-block;
+}

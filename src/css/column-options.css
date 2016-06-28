@@ -20,3 +20,21 @@
   background-color: #fafafa;
   color: black;
 }
+
+.i-arrow-right {
+  width: 0;
+  height: 0;
+  border-left: 5px solid #aaa;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  float: right;
+  margin-top: 5px;
+}
+
+.filter-option {
+  position: relative;
+}
+
+.filter-option:hover .filter-container {
+  display: inline-block;
+}

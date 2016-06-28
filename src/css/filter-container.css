@@ -1,0 +1,9 @@
+.filter-container {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  border: 1px solid #ddd;
+  background-color: white;
+  display: none;
+  padding: 5px;
+}
