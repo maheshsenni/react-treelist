@@ -11,11 +11,13 @@ class FilterContainer extends Component {
     this.displayName = 'FilterContainer';
     this.state = {
       filterText: '',
-      filterType: '',
+      filterType: 'eq',
       options: []
     };
     this.onTextChange = this.onTextChange.bind(this);
     this.onTypeChange = this.onTypeChange.bind(this);
+    this.onClear = this.onClear.bind(this);
+    this.onApply = this.onApply.bind(this);
   }
 
   onTextChange(event) {
@@ -30,10 +32,22 @@ class FilterContainer extends Component {
     });
   }
 
+  onClear() {
+    this.setState({
+      filterText: '',
+      filterType: 'eq'
+    });
+    this.props.onClear();
+  }
+
+  onApply() {
+    this.props.onApply(this.state.filterType, this.state.filterText);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { dataType, filterType, filterText } = nextProps;
-
     let options = null;
+
     if (dataType === 'number') {
       options = OPTIONS_NUMBER;
     } else if (dataType === 'date') {
@@ -43,14 +57,13 @@ class FilterContainer extends Component {
     }
 
     this.setState({
-      filterText: filterText || 'nothing here',
-      filterType: filterType || options[0].value,
-      options: options
+      options: options,
+      filterText: filterText,
+      filterType: filterType
     });
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className='filter-container'>
         <select value={this.state.filterType} onChange={this.onTypeChange}>
@@ -63,7 +76,8 @@ class FilterContainer extends Component {
           value={this.state.filterText}
           onChange={this.onTextChange}>
         </input>
-        <button>Clear</button><button>Apply</button>
+        <button onClick={this.onClear}>Clear</button>
+        <button onClick={this.onApply}>Apply</button>
       </div>
     );
   }
@@ -75,6 +89,12 @@ FilterContainer.propTypes = {
   filterText: PropTypes.string,
   onApply: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired
+};
+
+FilterContainer.defaultProps = {
+  dataType: 'string',
+  filterType: 'eq',
+  filterText: ''
 };
 
 export default FilterContainer;

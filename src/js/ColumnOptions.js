@@ -40,16 +40,23 @@ class ColumnOptions extends Component {
     document.removeEventListener('click', this.documentClickHandler, false);
   }
 
-  onFilterApply() {
-    console.log('On filter apply');
+  onFilterApply(type, value) {
+    this.props.onFilter(this.props.field, type, value);
   }
 
   onFilterClear() {
-    console.log('On filter clear');
+    this.props.onFilter(this.props.field);
   }
 
   render() {
     const { left, sort, filter, dataType } = this.props;
+    
+    let filterType, filterText;
+    const filterKeys = filter && Object.keys(filter);
+    if (filterKeys && filterKeys.length > 0) {
+      filterType = filterKeys[0];
+      filterText = filter[filterType];
+    }
 
     return (
       <ul className='column-options' style={{ left: left }} ref='container'>
@@ -63,6 +70,8 @@ class ColumnOptions extends Component {
           Filter<i className='i-arrow-right'></i>
           <FilterContainer
             dataType={dataType}
+            filterType={filterType}
+            filterText={filterText}
             onApply={this.onFilterApply}
             onClear={this.onFilterClear}>
           </FilterContainer>

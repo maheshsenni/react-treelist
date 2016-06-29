@@ -12,8 +12,7 @@ class TreeGrid extends Component {
     this.displayName = 'TreeGrid';
 
     this.handleSort = this.handleSort.bind(this);
-    this.applyFilter = this.applyFilter.bind(this);
-    this.clearFilters = this.clearFilters.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
     this.resizeColumn = this.resizeColumn.bind(this);
 
     const { columns } = this.props;
@@ -50,18 +49,19 @@ class TreeGrid extends Component {
     });
   }
 
-  applyFilter(field, value) {
+  handleFilter(field, type, value) {
+    const filterObj = this.state.filters;
+    if (typeof type === 'string') {
+      // apply filter on the field
+      filterObj[field] = {
+        [type]: value
+      };
+    } else {
+      // clear filter on the field
+      delete filterObj[field];
+    }
     this.setState({
-      filters: {
-        ...this.state.filters,
-        [field]: value
-      }
-    });
-  }
-
-  clearFilters() {
-    this.setState({
-      filters: {}
+      filters: filterObj
     });
   }
 
@@ -92,9 +92,9 @@ class TreeGrid extends Component {
 
     // use intial data from props by default
     let renderData = data;
-    if (Object.keys(this.state.filters).length > 0) {
-      renderData = getFilteredData(data, this.state.filters, id, parentId);
-    }
+    // if (Object.keys(this.state.filters).length > 0) {
+    //   renderData = getFilteredData(data, this.state.filters, id, parentId);
+    // }
     
     // check if sort is applied in any of the columns
     const sortKeys = Object.keys(this.state.sortedColumns);
@@ -107,14 +107,10 @@ class TreeGrid extends Component {
 
     return (
       <div className='tgrid'>
-        <FilterWrapper
-          columns={columns}
-          onFilter={this.applyFilter}
-          onClearAll={this.clearFilters}>
-        </FilterWrapper>
         <Header
           columns={columns}
           onSort={this.handleSort}
+          onFilter={this.handleFilter}
           sortedColumns={this.state.sortedColumns}
           filters={this.state.filters}
           onResize={this.resizeColumn}>

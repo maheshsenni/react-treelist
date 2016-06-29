@@ -181,6 +181,7 @@ class Header extends Component {
           sort={sortedColumns[this.state.columnOptions.field]}
           filter={filters[this.state.columnOptions.field]}
           onSort={this.props.onSort}
+          onFilter={this.props.onFilter}
           hide={this.hideColumnOptions}>
         </ColumnOptions>
       );
@@ -207,6 +208,7 @@ class Header extends Component {
 Header.propTypes = {
   columns: PropTypes.array.isRequired,
   onSort: PropTypes.func.isRequired,
+  onFilter: PropTypes.func.isRequired,
   sortedColumns: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   onResize: PropTypes.func.isRequired
