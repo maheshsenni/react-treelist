@@ -3,7 +3,8 @@ import '../css/filter-container.css';
 import {
   OPTIONS_STRING,
   OPTIONS_NUMBER,
-  OPTIONS_DATE } from './util/FilterUtils';
+  OPTIONS_DATE
+} from './util/FilterOptions';
 
 class FilterContainer extends Component {
   constructor(props) {
@@ -44,8 +45,7 @@ class FilterContainer extends Component {
     this.props.onApply(this.state.filterType, this.state.filterText);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { dataType, filterType, filterText } = nextProps;
+  setFilterOptions(dataType, filterType, filterText) {
     let options = null;
 
     if (dataType === 'number') {
@@ -61,6 +61,16 @@ class FilterContainer extends Component {
       filterText: filterText,
       filterType: filterType
     });
+  }
+
+  componentWillMount() {
+    const { dataType, filterType, filterText } = this.props;
+    this.setFilterOptions(dataType, filterType, filterText);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dataType, filterType, filterText } = nextProps;
+    this.setFilterOptions(dataType, filterType, filterText);
   }
 
   render() {
