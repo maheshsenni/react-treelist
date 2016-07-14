@@ -3,7 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import Header from './Header';
 import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
-import { getFilteredData, getSortedData } from './util/DataUtils';
+import getSortedData from './util/SortUtils';
+import getFilteredData from './util/FilterUtils';
 import FilterWrapper from './FilterWrapper';
 
 class TreeGrid extends Component {
