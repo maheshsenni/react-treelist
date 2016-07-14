@@ -5,7 +5,6 @@ import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
 import getSortedData from './util/SortUtils';
 import getFilteredData from './util/FilterUtils';
-import FilterWrapper from './FilterWrapper';
 
 class TreeGrid extends Component {
   constructor(props) {
