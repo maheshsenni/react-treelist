@@ -40,8 +40,8 @@ class ColumnOptions extends Component {
     document.removeEventListener('click', this.documentClickHandler, false);
   }
 
-  onFilterApply(type, value) {
-    this.props.onFilter(this.props.field, type, value);
+  onFilterApply(type, value, dataType) {
+    this.props.onFilter(this.props.field, type, value, dataType);
   }
 
   onFilterClear() {
@@ -88,6 +88,7 @@ ColumnOptions.propTypes = {
   sort: PropTypes.string,
   filter: PropTypes.object,
   onSort: PropTypes.func.isRequired,
+  onFilter: PropTypes.func.isRequired,
   hide: PropTypes.func.isRequired
 };
 

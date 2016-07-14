@@ -49,12 +49,13 @@ class TreeGrid extends Component {
     });
   }
 
-  handleFilter(field, type, value) {
+  handleFilter(field, type, value, dataType) {
     const filterObj = this.state.filters;
     if (typeof type === 'string') {
       // apply filter on the field
       filterObj[field] = {
-        [type]: value
+        [type]: value,
+        dataType: dataType
       };
     } else {
       // clear filter on the field

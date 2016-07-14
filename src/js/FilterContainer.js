@@ -41,7 +41,7 @@ class FilterContainer extends Component {
   }
 
   onApply() {
-    this.props.onApply(this.state.filterType, this.state.filterText);
+    this.props.onApply(this.state.filterType, this.state.filterText, this.props.dataType);
   }
 
   setFilterOptions(dataType, filterType, filterText) {
