@@ -12,7 +12,6 @@ class FilterContainer extends Component {
     this.displayName = 'FilterContainer';
     this.state = {
       filterText: '',
-      filterType: 'eq',
       options: []
     };
     this.onTextChange = this.onTextChange.bind(this);
