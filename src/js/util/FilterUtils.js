@@ -14,3 +14,5 @@ const getFilteredData = function(data, filters, idField, parentIdField) {
   const displayRows = getFilteredDisplayRows(filteredData, tree, idField, parentIdField);
   return displayRows;
 };
+
+export default getFilteredData;
