@@ -21,6 +21,11 @@ const COLUMNS = [{
   title: 'Employee ID',
   field: 'employeeId',
   type: 'number'
+}, {
+  title: 'Joined on',
+  field: 'joinedOn',
+  type: 'date',
+  format: 'mm/dd/yyyy'
 }];
 
 class App extends React.Component {
