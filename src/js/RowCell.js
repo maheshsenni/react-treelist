@@ -1,6 +1,7 @@
 import '../css/row-cell.css';
 import React from 'react';
 import RowIndent from './RowIndent';
+import dateFormat from 'dateFormat';
 
 class RowCell extends React.Component {
   constructor(props) {
@@ -13,6 +14,10 @@ class RowCell extends React.Component {
       reactKey,
       indent,
       data,
+      type,
+      format,
+      formatter,
+      className,
       showExpandCollapse,
       isExpanded,
       onExpandToggle
@@ -32,11 +37,20 @@ class RowCell extends React.Component {
       expandToggleIcon = <span className='i-collapse' onClick={onExpandToggle}>-</span>;
     }
 
+    let displayText = data;
+    if (type === 'date') {
+      displayText = dateFormat(data, format);
+    }
+
+    if (typeof formatter === 'function') {
+      displayText = formatter(data);
+    }
+
     return (
       <td className='tgrid-data-cell'>
         {rowIndent}
         {expandToggleIcon}
-        {data}
+        <span className={className}>{displayText}</span>
       </td>
     );
   }
@@ -47,9 +61,17 @@ RowCell.propTypes = {
   index: React.PropTypes.number.isRequired,
   indent: React.PropTypes.number.isRequired,
   data: React.PropTypes.any.isRequired,
+  type: React.PropTypes.string,
+  format: React.PropTypes.string,
+  formatter: React.PropTypes.func,
+  className: React.PropTypes.string,
   showExpandCollapse: React.PropTypes.bool,
   isExpanded: React.PropTypes.bool,
   onExpandToggle: React.PropTypes.func
+};
+
+RowCell.defaultProps = {
+  format: 'mm/dd/yyyy'
 };
 
 export default RowCell;

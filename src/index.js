@@ -20,12 +20,16 @@ const COLUMNS = [{
 }, {
   title: 'Employee ID',
   field: 'employeeId',
-  type: 'number'
+  type: 'number',
+  class: 'red',
+  formatter: function(value) {
+    return value + ' - x'
+  }
 }, {
   title: 'Joined on',
   field: 'joinedOn',
   type: 'date',
-  format: 'mm/dd/yyyy'
+  format: 'dd/mm/yyyy'
 }];
 
 class App extends React.Component {

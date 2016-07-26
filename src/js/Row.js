@@ -21,6 +21,10 @@ class Row extends React.Component {
           index={index}
           indent={this.props.level}
           data={data[col.field]}
+          type={col.type}
+          format={col.format}
+          formatter={col.formatter}
+          className={col.class}
           showExpandCollapse={canExpand}
           isExpanded={this.props.expanded}
           onExpandToggle={this.handleExpandToggle}></RowCell>
