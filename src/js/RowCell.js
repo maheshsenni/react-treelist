@@ -35,6 +35,8 @@ class RowCell extends React.Component {
       expandToggleIcon = <span className='i-expand' onClick={onExpandToggle}>+</span>;
     } else if (index === 0 && showExpandCollapse && isExpanded) {
       expandToggleIcon = <span className='i-collapse' onClick={onExpandToggle}>-</span>;
+    } else if (index === 0 && !showExpandCollapse) {
+      expandToggleIcon = <span className='i-dummy'></span>;
     }
 
     let displayText = data;

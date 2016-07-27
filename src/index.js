@@ -23,7 +23,7 @@ const COLUMNS = [{
   type: 'number',
   class: 'red',
   formatter: function(value) {
-    return value + ' - x'
+    return 'EMPID' + value;
   }
 }, {
   title: 'Joined on',

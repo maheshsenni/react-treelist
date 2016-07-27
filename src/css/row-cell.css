@@ -7,5 +7,12 @@
 
 .i-expand, .i-collapse {
   margin-right: 5px;
+  width: 10px;
+  display: inline-block;
   cursor: pointer;
+}
+
+.i-dummy {
+  display: inline-block;
+  width: 15px;
 }
