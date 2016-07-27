@@ -4,22 +4,27 @@
   position: relative;
 }
 
-.tgrid-column-header-text {
+.tgrid-column-header-text-wrapper {
   padding: 0.5em 0.75em;
   display: inline-block;
   color: #a8a8a8;
   font-weight: normal;
+  width: 100%;
+}
+
+.tgrid-column-header-text {
+  float: left;
+  width: calc(100% - 10px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
 }
 
 .i-sort-desc {
   transform: rotate(90deg);
   display: inline-block;
   color: red;
-  margin-left: 3px;
+  margin-right: 3px;
   font-size: 0.7em;
   font-weight: bold;
 }
@@ -28,7 +33,7 @@
   transform: rotate(-90deg);
   display: inline-block;
   color: red;
-  margin-left: 3px;
+  margin-right: 3px;
   font-size: 0.7em;
   font-weight: bold;
 }
@@ -42,10 +47,10 @@
 }
 
 .i-column-menu {
-  display: inline-block;
   float: right;
   margin-top: 5px;
   cursor: pointer;
+  width: 10px;
 }
 
 .resize-indicator {
