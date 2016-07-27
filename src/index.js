@@ -32,12 +32,17 @@ const COLUMNS = [{
   format: 'dd/mm/yyyy'
 }];
 
+const OPTIONS = {
+  minimumColWidth: 100
+};
+
 class App extends React.Component {
   render () {
     return (
       <TreeGrid
         data={DATA}
         columns={COLUMNS}
+        options={OPTIONS}
         id={'key'}
         parentId={'parentKey'}></TreeGrid>
     );

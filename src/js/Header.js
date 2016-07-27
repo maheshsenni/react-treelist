@@ -7,6 +7,8 @@ import ResizeGhost from './ResizeGhost';
 import ResizeHint from './ResizeHint';
 import ColumnOptions from './ColumnOptions';
 
+const COLUMN_MINIMUM_WIDTH = 75;
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,7 @@ class Header extends Component {
   }
 
   onColumnOptionsClick(iconXPos, column) {
-    const headerOffsetLeft = this.refs.header.offsetLeft;
+    const headerOffsetLeft = this.refs.header.getBoundingClientRect().left;
     const columnOptionsLeft = iconXPos - headerOffsetLeft;
     if (this.state.showColumnOptions) {
       // check if different column
@@ -71,7 +73,7 @@ class Header extends Component {
 
   showResizeGhost(column, indicatorPos, currentWidth) {
     this._currentWidth = currentWidth;
-    const headerOffsetLeft = this.refs.header.offsetLeft;
+    const headerOffsetLeft = this.refs.header.getBoundingClientRect().left;
     const handlePos = {
       width: indicatorPos.width,
       height: indicatorPos.height,
@@ -94,7 +96,7 @@ class Header extends Component {
   }
 
   onResizeStart(clientX) {
-    const headerOffsetLeft = this.refs.header.offsetLeft;
+    const headerOffsetLeft = this.refs.header.getBoundingClientRect().left;
     this._resizeStartX = clientX - headerOffsetLeft;
     this.setState({
       showResizeHint: true,
@@ -104,7 +106,7 @@ class Header extends Component {
 
   onResize(movedX) {
     let left = this._resizeStartX + movedX;
-    const headerWidth = this.refs.header.offsetWidth;
+    const headerWidth = this.refs.header.clientWidth;
 
     if (left < 0) {
       left = 0;
@@ -117,15 +119,18 @@ class Header extends Component {
     });
   }
 
-  onResizeEnd(movedX) {
+  onResizeEnd() {
+    const movedX = this.state.resizeHintLeft - this._resizeStartX;
     const newWidth = this._currentWidth + movedX;
+    let minimumWidth = this.props.minimumColWidth || COLUMN_MINIMUM_WIDTH;
     this.setState({
       showResizeGhost: false,
       showResizeHint: false,
       resizeColumn: null,
       resizeGhostPos: null
     });
-    this.props.onResize(this.state.resizeColumn, newWidth);
+    this.props.onResize(this.state.resizeColumn,
+      (newWidth < minimumWidth ? minimumWidth : newWidth));
   }
 
   _makeTableHeaders(columns) {
@@ -207,6 +212,7 @@ class Header extends Component {
 
 Header.propTypes = {
   columns: PropTypes.array.isRequired,
+  minimumColWidth: PropTypes.number,
   onSort: PropTypes.func.isRequired,
   onFilter: PropTypes.func.isRequired,
   sortedColumns: PropTypes.object.isRequired,

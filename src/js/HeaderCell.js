@@ -18,7 +18,7 @@ class HeaderCell extends Component {
 
   onResizeMouseEnter() {
     const boundingRect = this.refs.resizeIndicator.getBoundingClientRect();
-    const currentWidth = this.refs.header.offsetWidth;
+    const currentWidth = this.refs.header.clientWidth;
     this.props.onResizeEnter(this.props.column, boundingRect, currentWidth);
   }
 

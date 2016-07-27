@@ -80,7 +80,7 @@ class TreeGrid extends Component {
 
   render() {
     let { id, parentId } = this.props;
-    const { data } = this.props;
+    const { data, options } = this.props;
     const { columns } = this.state;
 
     // assign defaults
@@ -114,7 +114,8 @@ class TreeGrid extends Component {
           onFilter={this.handleFilter}
           sortedColumns={this.state.sortedColumns}
           filters={this.state.filters}
-          onResize={this.resizeColumn}>
+          onResize={this.resizeColumn}
+          minimumColWidth={options.minimumColWidth}>
         </Header>
         <Body
           columns={columns}
@@ -131,8 +132,13 @@ class TreeGrid extends Component {
 TreeGrid.propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
+  options: PropTypes.object,
   id: PropTypes.string,
   parentId: PropTypes.string
-}
+};
+
+TreeGrid.defaultProps = {
+  options: {}
+};
 
 export default TreeGrid;

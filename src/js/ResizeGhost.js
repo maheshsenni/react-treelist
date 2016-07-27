@@ -6,9 +6,13 @@ class ResizeGhost extends Component {
     super(props);
     this.displayName = 'ResizeGhost';
     this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onDrag = this.onDrag.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.documentDragoverHandler = this.documentDragoverHandler.bind(this);
+    this.state = {
+      resizing: false,
+      dragX: 0
+    };
   }
 
   onMouseLeave() {
@@ -16,18 +20,27 @@ class ResizeGhost extends Component {
   }
 
   onDragStart(event) {
+    // setting 'event.dataTransfer' for firefox :(
+    event.dataTransfer.setData('text', '');
     this._initialX = event.clientX;
     this.props.onDragStart(event.clientX);
   }
 
-  onDrag(event) {
+  onDragEnd(event) {
+    this.props.onDragEnd();
+  }
+
+  documentDragoverHandler(event) {
     const movedX = event.clientX - this._initialX;
     this.props.onDrag(movedX);
   }
 
-  onDragEnd(event) {
-    const movedX = event.clientX - this._initialX;
-    this.props.onDragEnd(movedX);
+  componentDidMount() {
+    document.addEventListener('dragover', this.documentDragoverHandler, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('dragover', this.documentDragoverHandler, false);
   }
 
   render() {
@@ -36,7 +49,6 @@ class ResizeGhost extends Component {
         className='resize-handle'
         style={{...this.props}}
         onMouseLeave={this.onMouseLeave}
-        onDrag={this.onDrag}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}></div>
     );
