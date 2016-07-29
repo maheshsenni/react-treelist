@@ -84,7 +84,7 @@ class Header extends Component {
       width: indicatorPos.width,
       height: indicatorPos.height,
       top: 0,
-      left: indicatorPos.left - headerOffsetLeft
+      left: indicatorPos.left - headerOffsetLeft + this.props.scrollLeft
     };
     this.setState({
       showResizeGhost: true,
@@ -103,7 +103,7 @@ class Header extends Component {
 
   onResizeStart(clientX) {
     const headerOffsetLeft = this.refs.header.getBoundingClientRect().left;
-    this._resizeStartX = clientX - headerOffsetLeft;
+    this._resizeStartX = clientX - headerOffsetLeft + this.props.scrollLeft;
     this.setState({
       showResizeHint: true,
       resizeHintLeft: this._resizeStartX
