@@ -14,6 +14,7 @@ class TreeGrid extends Component {
     this.handleSort = this.handleSort.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.resizeColumn = this.resizeColumn.bind(this);
+    this.onBodyHScroll = this.onBodyHScroll.bind(this);
 
     const { columns } = this.props;
 
@@ -21,7 +22,8 @@ class TreeGrid extends Component {
       sortedColumns: {},
       filters: {},
       columns: columns,
-      totalWidth: null
+      totalWidth: null,
+      scrollLeft: 0
     };
   }
 
@@ -80,6 +82,10 @@ class TreeGrid extends Component {
     });
   }
 
+  onBodyHScroll(scrollLeft) {
+    this.setState({scrollLeft});
+  }
+
   render() {
     let { id, parentId } = this.props;
     const { data, options } = this.props;
@@ -119,6 +125,7 @@ class TreeGrid extends Component {
           filters={this.state.filters}
           onResize={this.resizeColumn}
           width={this.state.totalWidth}
+          scrollLeft={this.state.scrollLeft}
           minimumColWidth={options.minimumColWidth}>
         </Header>
         <Body
@@ -127,7 +134,9 @@ class TreeGrid extends Component {
           metadata={metadata}
           idField={id}
           width={this.state.totalWidth}
-          parentIdField={parentId}>
+          height={options.height}
+          parentIdField={parentId}
+          onHScroll={this.onBodyHScroll}>
         </Body>
       </div>
     );

@@ -15,6 +15,7 @@ class Body extends Component {
     super(props);
     this.displayName = 'Body';
     this.handleExpandToggle = this.handleExpandToggle.bind(this);
+    this.onHorizontalScroll = this.onHorizontalScroll.bind(this);
     this.state = {
       expandedRows: []
     };
@@ -73,15 +74,22 @@ class Body extends Component {
       });
     }
   }
+
+  onHorizontalScroll(event) {
+    this.props.onHScroll(event.target.scrollLeft);
+  }
   
   render() {
-    const { columns, data, metadata, idField, parentIdField, width } = this.props;
-    const rows = this.makeRows(data, metadata, columns, idField, parentIdField);
+    const { columns, data, metadata, idField,
+      parentIdField, width, height } = this.props;
+    const rows = this.makeRows(data, metadata, columns,
+      idField, parentIdField);
 
     console.log('Expanded rows:', this.state.expandedRows);
 
     return (
-      <div className='tgrid-body-wrapper'>
+      <div className='tgrid-body-wrapper'
+        onScroll={this.onHorizontalScroll} style={{ height: height }}>
         <table className='tgrid-body-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
           <tbody>
@@ -99,7 +107,13 @@ Body.propTypes = {
   metadata: PropTypes.object.isRequired,
   idField: PropTypes.string.isRequired,
   parentIdField: PropTypes.string.isRequired,
-  width: PropTypes.number
+  width: PropTypes.number,
+  height: PropTypes.number,
+  onHScroll: PropTypes.func.isRequired
+};
+
+Body.defaultProps = {
+  height: null
 };
 
 export default Body;

@@ -1,4 +1,7 @@
-.tgrid-body-wrapper {}
+.tgrid-body-wrapper {
+  overflow-y: scroll;
+  overflow-x: auto;
+}
 
 .tgrid-body-table {
   width: 100%;

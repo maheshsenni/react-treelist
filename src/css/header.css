@@ -1,5 +1,6 @@
 .tgrid-header-wrapper {
   position: relative;
+  overflow: hidden;
 }
 
 .tgrid-header-table {

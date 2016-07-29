@@ -6,6 +6,7 @@ import Colgroup from './Colgroup';
 import ResizeGhost from './ResizeGhost';
 import ResizeHint from './ResizeHint';
 import ColumnOptions from './ColumnOptions';
+import getScrollbarWidth from './util/ScrollbarWidth';
 
 const COLUMN_MINIMUM_WIDTH = 75;
 
@@ -21,7 +22,8 @@ class Header extends Component {
       resizeGhostPos: null,
       showColumnOptions: false,
       columnOptionsPos: null,
-      columnOptions: null
+      columnOptions: null,
+      scrollbarWidth: null
     };
     // this is not in state as the component need not
     // re-render when this is changed
@@ -152,6 +154,13 @@ class Header extends Component {
     const rect = this.refs.header.getBoundingClientRect();
   }
 
+  componentWillMount() {
+    let scrollbarWidth = getScrollbarWidth();
+    if (scrollbarWidth > 0) {
+      this.setState({scrollbarWidth});
+    }
+  }
+
   _makeTableHeaders(columns) {
     const headerCells = columns.map((col, index) => {
       return (
@@ -167,6 +176,10 @@ class Header extends Component {
       );
     });
     return headerCells;
+  }
+
+  componentDidUpdate() {
+    this.refs.header.scrollLeft = this.props.scrollLeft;
   }
 
   render() {
@@ -213,7 +226,7 @@ class Header extends Component {
     }
 
     return (
-      <div className='tgrid-header-wrapper' ref='header'>
+      <div className='tgrid-header-wrapper' ref='header' style={{ marginRight: this.state.scrollbarWidth}}>
         {resizeGhost}
         {resizeHint}
         {columnOptions}
@@ -238,7 +251,12 @@ Header.propTypes = {
   sortedColumns: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   onResize: PropTypes.func.isRequired,
-  width: PropTypes.number
+  width: PropTypes.number,
+  scrollLeft: PropTypes.number.isRequired
+};
+
+Header.defaultProps = {
+  scrollLeft: 0
 };
 
 export default Header;

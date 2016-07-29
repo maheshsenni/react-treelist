@@ -6,7 +6,7 @@ import {DATA} from './sample-data/tree-data-nested';
 
 const COLUMNS = [{
   title: 'ID',
-  field: 'key',
+  field: 'id',
   type: 'number',
   width: 100
 }, {
@@ -33,20 +33,19 @@ const COLUMNS = [{
 }];
 
 const OPTIONS = {
+  height: 300,
   minimumColWidth: 100
 };
 
 class App extends React.Component {
   render () {
     return (
-      <div className='wrapper'>
-        <TreeGrid
-          data={DATA}
-          columns={COLUMNS}
-          options={OPTIONS}
-          id={'key'}
-          parentId={'parentKey'}></TreeGrid>
-      </div>
+      <TreeGrid
+        data={DATA}
+        columns={COLUMNS}
+        options={OPTIONS}
+        id={'id'}
+        parentId={'parentId'}></TreeGrid>
     );
   }
 }
