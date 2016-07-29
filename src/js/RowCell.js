@@ -62,7 +62,7 @@ RowCell.propTypes = {
   reactKey: React.PropTypes.string.isRequired,
   index: React.PropTypes.number.isRequired,
   indent: React.PropTypes.number.isRequired,
-  data: React.PropTypes.any.isRequired,
+  data: React.PropTypes.any,
   type: React.PropTypes.string,
   format: React.PropTypes.string,
   formatter: React.PropTypes.func,
