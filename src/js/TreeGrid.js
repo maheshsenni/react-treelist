@@ -20,7 +20,8 @@ class TreeGrid extends Component {
     this.state = {
       sortedColumns: {},
       filters: {},
-      columns: columns
+      columns: columns,
+      totalWidth: null
     };
   }
 
@@ -66,7 +67,7 @@ class TreeGrid extends Component {
     });
   }
 
-  resizeColumn(column, width) {
+  resizeColumn(column, width, totalWidth) {
     const newColumn = {...column, width};
     this.state.columns.forEach((c) => {
       if (c.field === column.field) {
@@ -74,7 +75,8 @@ class TreeGrid extends Component {
       }
     });
     this.setState({
-      columns: this.state.columns
+      columns: this.state.columns,
+      totalWidth: totalWidth
     });
   }
 
@@ -93,6 +95,7 @@ class TreeGrid extends Component {
 
     // use intial data from props by default
     let renderData = data;
+    // Filtering is disabled until all the components are ready
     // if (Object.keys(this.state.filters).length > 0) {
     //   renderData = getFilteredData(data, this.state.filters, id, parentId);
     // }
@@ -115,6 +118,7 @@ class TreeGrid extends Component {
           sortedColumns={this.state.sortedColumns}
           filters={this.state.filters}
           onResize={this.resizeColumn}
+          width={this.state.totalWidth}
           minimumColWidth={options.minimumColWidth}>
         </Header>
         <Body
@@ -122,6 +126,7 @@ class TreeGrid extends Component {
           data={renderData}
           metadata={metadata}
           idField={id}
+          width={this.state.totalWidth}
           parentIdField={parentId}>
         </Body>
       </div>

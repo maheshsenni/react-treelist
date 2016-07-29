@@ -1,5 +1,6 @@
 import '../css/body.css';
-import React from 'react';
+
+import React, { Component, PropTypes } from 'react';
 import Colgroup from './Colgroup';
 import { Row, createRow } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
@@ -8,7 +9,7 @@ const _isExpanded = function(rowId, expandedRows) {
   return expandedRows.indexOf(rowId) > -1;
 };
 
-class Body extends React.Component {
+class Body extends Component {
 
   constructor(props) {
     super(props);
@@ -74,14 +75,14 @@ class Body extends React.Component {
   }
   
   render() {
-    const { columns, data, metadata, idField, parentIdField } = this.props;
+    const { columns, data, metadata, idField, parentIdField, width } = this.props;
     const rows = this.makeRows(data, metadata, columns, idField, parentIdField);
 
     console.log('Expanded rows:', this.state.expandedRows);
 
     return (
       <div className='tgrid-body-wrapper'>
-        <table className='tgrid-body-table'>
+        <table className='tgrid-body-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
           <tbody>
             {rows}
@@ -93,11 +94,12 @@ class Body extends React.Component {
 }
 
 Body.propTypes = {
-  columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.array.isRequired,
-  metadata: React.PropTypes.object.isRequired,
-  idField: React.PropTypes.string.isRequired,
-  parentIdField: React.PropTypes.string.isRequired
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+  metadata: PropTypes.object.isRequired,
+  idField: PropTypes.string.isRequired,
+  parentIdField: PropTypes.string.isRequired,
+  width: PropTypes.number
 };
 
 export default Body;

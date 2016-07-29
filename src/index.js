@@ -39,12 +39,14 @@ const OPTIONS = {
 class App extends React.Component {
   render () {
     return (
-      <TreeGrid
-        data={DATA}
-        columns={COLUMNS}
-        options={OPTIONS}
-        id={'key'}
-        parentId={'parentKey'}></TreeGrid>
+      <div className='wrapper'>
+        <TreeGrid
+          data={DATA}
+          columns={COLUMNS}
+          options={OPTIONS}
+          id={'key'}
+          parentId={'parentKey'}></TreeGrid>
+      </div>
     );
   }
 }

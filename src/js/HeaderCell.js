@@ -28,6 +28,11 @@ class HeaderCell extends Component {
     event.stopPropagation();
   }
 
+  componentDidMount() {
+    const rect = this.refs.header.getBoundingClientRect();
+    this.props.whenWidthAvailable(this.props.column.field, rect.width);
+  }
+
   render() {
     const { sort } = this.props;
     let sortIndicator = null;
@@ -68,7 +73,8 @@ HeaderCell.propTypes = {
   onSort: PropTypes.func.isRequired,
   sort: PropTypes.string,
   onResizeEnter: PropTypes.func.isRequired,
-  onColumnOptionsClick: PropTypes.func.isRequired
+  onColumnOptionsClick: PropTypes.func.isRequired,
+  whenWidthAvailable:  PropTypes.func.isRequired
 };
 
 export default HeaderCell;

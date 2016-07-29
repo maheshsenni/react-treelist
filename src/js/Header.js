@@ -23,6 +23,9 @@ class Header extends Component {
       columnOptionsPos: null,
       columnOptions: null
     };
+    // this is not in state as the component need not
+    // re-render when this is changed
+    this.columnWidths = {};
 
     this.showResizeGhost = this.showResizeGhost.bind(this);
     this.removeResizeGhost = this.removeResizeGhost.bind(this);
@@ -31,6 +34,7 @@ class Header extends Component {
     this.onResizeEnd = this.onResizeEnd.bind(this);
     this.onColumnOptionsClick = this.onColumnOptionsClick.bind(this);
     this.hideColumnOptions = this.hideColumnOptions.bind(this);
+    this.cacheColumnWidth = this.cacheColumnWidth.bind(this);
   }
 
   onColumnOptionsClick(iconXPos, column) {
@@ -121,7 +125,7 @@ class Header extends Component {
 
   onResizeEnd() {
     const movedX = this.state.resizeHintLeft - this._resizeStartX;
-    const newWidth = this._currentWidth + movedX;
+    let newWidth = this._currentWidth + movedX;
     let minimumWidth = this.props.minimumColWidth || COLUMN_MINIMUM_WIDTH;
     this.setState({
       showResizeGhost: false,
@@ -129,8 +133,23 @@ class Header extends Component {
       resizeColumn: null,
       resizeGhostPos: null
     });
-    this.props.onResize(this.state.resizeColumn,
-      (newWidth < minimumWidth ? minimumWidth : newWidth));
+
+    newWidth = newWidth < minimumWidth ? minimumWidth : newWidth;
+
+    // determine change to total width here
+    const headerWidth = this.refs.header.getBoundingClientRect().width;
+    const existingWidth = this.columnWidths[this.state.resizeColumn.field];
+    const widthDiff = newWidth - existingWidth;
+
+    this.props.onResize(this.state.resizeColumn, newWidth, headerWidth + widthDiff);
+  }
+
+  cacheColumnWidth(field, width) {
+    this.columnWidths[field] = width;
+  }
+
+  componentDidMount() {
+    const rect = this.refs.header.getBoundingClientRect();
   }
 
   _makeTableHeaders(columns) {
@@ -142,7 +161,8 @@ class Header extends Component {
           sort={this.props.sortedColumns[col.field]}
           onSort={this.props.onSort}
           onResizeEnter={this.showResizeGhost}
-          onColumnOptionsClick={this.onColumnOptionsClick}>
+          onColumnOptionsClick={this.onColumnOptionsClick}
+          whenWidthAvailable={this.cacheColumnWidth}>
         </HeaderCell>
       );
     });
@@ -150,7 +170,7 @@ class Header extends Component {
   }
 
   render() {
-    const { columns, sortedColumns, filters } = this.props;
+    const { columns, sortedColumns, filters, width } = this.props;
     const headerCells = this._makeTableHeaders(columns);
 
     let resizeGhost = null;
@@ -197,7 +217,7 @@ class Header extends Component {
         {resizeGhost}
         {resizeHint}
         {columnOptions}
-        <table className='tgrid-header-table'>
+        <table className='tgrid-header-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
           <thead>
             <tr>
@@ -217,7 +237,8 @@ Header.propTypes = {
   onFilter: PropTypes.func.isRequired,
   sortedColumns: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
-  onResize: PropTypes.func.isRequired
+  onResize: PropTypes.func.isRequired,
+  width: PropTypes.number
 };
 
 export default Header;
