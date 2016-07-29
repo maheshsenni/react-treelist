@@ -83,7 +83,9 @@ class TreeGrid extends Component {
   }
 
   onBodyHScroll(scrollLeft) {
-    this.setState({scrollLeft});
+    if (scrollLeft !== this.state.scrollLeft) {
+      this.setState({scrollLeft});
+    }
   }
 
   render() {

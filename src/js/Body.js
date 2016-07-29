@@ -78,6 +78,14 @@ class Body extends Component {
   onHorizontalScroll(event) {
     this.props.onHScroll(event.target.scrollLeft);
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // adding this as scroll causes re-render
+    // checking just expanded rows for now, can add
+    // 'data' in future
+    return nextProps.width !== this.props.width ||
+      nextState.expandedRows.length !== this.state.expandedRows.length;
+  }
   
   render() {
     const { columns, data, metadata, idField,
