@@ -226,18 +226,20 @@ class Header extends Component {
     }
 
     return (
-      <div className='tgrid-header-wrapper' ref='header' style={{ marginRight: this.state.scrollbarWidth}}>
-        {resizeGhost}
-        {resizeHint}
-        {columnOptions}
-        <table className='tgrid-header-table' style={{ width: width}}>
-          <Colgroup columns={columns}></Colgroup>
-          <thead>
-            <tr>
-              {headerCells}
-            </tr>
-          </thead>
-        </table>
+      <div className='tgrid-header' style={{ paddingRight: this.state.scrollbarWidth}}>
+        <div className='tgrid-header-wrapper' ref='header'>
+          {resizeGhost}
+          {resizeHint}
+          {columnOptions}
+          <table className='tgrid-header-table' style={{ width: width}}>
+            <Colgroup columns={columns}></Colgroup>
+            <thead>
+              <tr>
+                {headerCells}
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
     );
   }

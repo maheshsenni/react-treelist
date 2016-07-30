@@ -38,9 +38,9 @@ class HeaderCell extends Component {
     let sortIndicator = null;
 
     if (sort === 'asc') {
-      sortIndicator = <span className='i-sort-asc'>&gt;</span>;
+      sortIndicator = <span className='i-sort i-sort-asc'></span>;
     } else if (sort === 'desc') {
-      sortIndicator = <span className='i-sort-desc'>&gt;</span>;
+      sortIndicator = <span className='i-sort i-sort-desc'></span>;
     }
 
     return (
@@ -50,13 +50,9 @@ class HeaderCell extends Component {
         onClick={this.handleClick}>
         <span className='tgrid-column-header-text-wrapper'>
           <span className='tgrid-column-header-text'>
-            {sortIndicator}
             {this.props.column.title}
           </span>
-          <span
-            className='i-arrow-down i-column-menu'
-            onClick={this.onColumnOptionsClick}>
-          </span>
+          {sortIndicator}
         </span>
         <div className='resize-indicator'
           ref='resizeIndicator'

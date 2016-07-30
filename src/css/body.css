@@ -6,4 +6,9 @@
 .tgrid-body-table {
   width: 100%;
   table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tgrid-body-table tr {
+  border-bottom: 1px solid #e6e6e6;
 }

@@ -94,8 +94,6 @@ class Body extends Component {
     const rows = this.makeRows(data, metadata, columns,
       idField, parentIdField);
 
-    console.log('Expanded rows:', this.state.expandedRows);
-
     return (
       <div className='tgrid-body-wrapper'
         onScroll={this.onHorizontalScroll} style={{ height: height }}>

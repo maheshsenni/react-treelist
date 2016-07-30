@@ -1,10 +1,16 @@
+.tgrid-header {
+  background-color: #fafafa;
+}
+
 .tgrid-header-wrapper {
   position: relative;
   overflow: hidden;
+  border-right: 1px solid #e6e6e6;
 }
 
 .tgrid-header-table {
   width: 100%;
   table-layout: fixed;
+  border-collapse: collapse;
   background-color: #fafafa;
 }
