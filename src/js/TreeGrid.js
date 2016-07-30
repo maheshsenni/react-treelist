@@ -117,6 +117,11 @@ class TreeGrid extends Component {
     // generate metadata with final data after filtering and sorting
     const metadata = getRowsWithChildren(renderData, id, parentId);
 
+    // construct update keys
+    const updateHash = {
+      sort: JSON.stringify(this.state.sortedColumns)
+    };
+
     return (
       <div className='tgrid'>
         <Header
@@ -138,7 +143,8 @@ class TreeGrid extends Component {
           width={this.state.totalWidth}
           height={options.height}
           parentIdField={parentId}
-          onHScroll={this.onBodyHScroll}>
+          onHScroll={this.onBodyHScroll}
+          updateHash={updateHash}>
         </Body>
       </div>
     );

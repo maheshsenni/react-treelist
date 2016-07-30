@@ -84,7 +84,8 @@ class Body extends Component {
     // checking just expanded rows for now, can add
     // 'data' in future
     return nextProps.width !== this.props.width ||
-      nextState.expandedRows.length !== this.state.expandedRows.length;
+      nextState.expandedRows.length !== this.state.expandedRows.length ||
+      nextProps.updateHash.sort !== this.props.updateHash.sort;
   }
   
   render() {
@@ -117,11 +118,13 @@ Body.propTypes = {
   parentIdField: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  onHScroll: PropTypes.func.isRequired
+  onHScroll: PropTypes.func.isRequired,
+  updateHash: PropTypes.object
 };
 
 Body.defaultProps = {
-  height: null
+  height: null,
+  updateHash: {}
 };
 
 export default Body;
