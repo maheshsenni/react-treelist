@@ -1,21 +1,24 @@
-# react-tgrid
+# react-treelist
 
-A React component to display data in tree structure.
+A React treelist component to display data in tree structure.
 
 ## Installation
 
-`npm install --save react-tgrid`
+```sh
+npm install --save react-treelist
+```
 
 ## Usage
 
 ```js
-import TreeGrid from './js/TreeGrid';  
-<TreeGrid  
+import TreeList from './js/TreeList';
+
+<TreeList
   data={DATA}  
   columns={COLUMNS}
   options={OPTIONS}
   id={'id'}
-  parentId={'parentId'}></TreeGrid>
+  parentId={'parentId'}></TreeList>
 ```
 
 ## Contributing

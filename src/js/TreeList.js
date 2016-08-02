@@ -6,10 +6,10 @@ import { getRowsWithChildren } from './util/TreeUtils';
 import getSortedData from './util/SortUtils';
 import getFilteredData from './util/FilterUtils';
 
-class TreeGrid extends Component {
+class TreeList extends Component {
   constructor(props) {
     super(props);
-    this.displayName = 'TreeGrid';
+    this.displayName = 'TreeList';
 
     this.handleSort = this.handleSort.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
@@ -151,7 +151,7 @@ class TreeGrid extends Component {
   }
 }
 
-TreeGrid.propTypes = {
+TreeList.propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
   options: PropTypes.object,
@@ -159,8 +159,8 @@ TreeGrid.propTypes = {
   parentId: PropTypes.string
 };
 
-TreeGrid.defaultProps = {
+TreeList.defaultProps = {
   options: {}
 };
 
-export default TreeGrid;
+export default TreeList;

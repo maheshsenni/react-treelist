@@ -1,15 +1,15 @@
 {
-  "name": "react-tgrid",
+  "name": "react-treelist",
   "version": "0.1.0",
-  "description": "A React tree grid component",
-  "main": "src/js/TreeGrid.js",
-  "homepage": "https://github.com/maheshsenni/react-tgrid",
-  "bugs": "https://github.com/maheshsenni/react-tgrid/issues",
+  "description": "A React treeist component to display data in tree structure.",
+  "main": "src/js/TreeList.js",
+  "homepage": "https://github.com/maheshsenni/react-treelist",
+  "bugs": "https://github.com/maheshsenni/react-treelist/issues",
   "license": "MIT",
   "author": "Mahesh Senniappan <mahesh.h4evr@gmail.com>",
   "repository": {
     "type": "git",
-    "url" : "https://github.com/maheshsenni/react-tgrid.git"
+    "url" : "git+https://github.com/maheshsenni/react-treelist.git"
   },
   "scripts": {
     "test": "mocha --watch --recursive --compilers js:babel-register",
@@ -18,10 +18,10 @@
   },
   "keywords": [
     "tree",
-    "grid",
-    "list",
-    "treegrid",
     "treelist",
+    "treegrid",
+    "list",
+    "grid",
     "react"
   ],
   "peerDependencies": {

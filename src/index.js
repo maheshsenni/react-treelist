@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import TreeGrid from './js/TreeGrid';
+import TreeList from './js/TreeList';
 
 import {DATA} from './sample-data/tree-data-nested';
 
@@ -42,12 +42,12 @@ const OPTIONS = {
 class App extends React.Component {
   render () {
     return (
-      <TreeGrid
+      <TreeList
         data={DATA}
         columns={COLUMNS}
         options={OPTIONS}
         id={'id'}
-        parentId={'parentId'}></TreeGrid>
+        parentId={'parentId'}></TreeList>
     );
   }
 }
