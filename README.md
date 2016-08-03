@@ -2,6 +2,8 @@
 
 A React treelist component to display data in tree structure.
 
+[Demo](https://rawgit.com/maheshsenni/react-treelist/master/demo/index.html)
+
 ## Installation
 
 ```sh
