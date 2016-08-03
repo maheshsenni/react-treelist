@@ -11,7 +11,7 @@ npm install --save react-treelist
 ## Usage
 
 ```js
-import TreeList from './js/TreeList';
+import TreeList from 'react-treelist';
 
 <TreeList
   data={DATA}  

@@ -1,7 +1,7 @@
 {
   "name": "react-treelist",
   "version": "0.1.0",
-  "description": "A React treeist component to display data in tree structure.",
+  "description": "A React treelist component to display data in tree structure.",
   "main": "src/js/TreeList.js",
   "homepage": "https://github.com/maheshsenni/react-treelist",
   "bugs": "https://github.com/maheshsenni/react-treelist/issues",
@@ -9,9 +9,10 @@
   "author": "Mahesh Senniappan <mahesh.h4evr@gmail.com>",
   "repository": {
     "type": "git",
-    "url" : "git+https://github.com/maheshsenni/react-treelist.git"
+    "url": "git+https://github.com/maheshsenni/react-treelist.git"
   },
   "scripts": {
+    "dist": "webpack --progress --colors --config dist.config.js",
     "test": "mocha --watch --recursive --compilers js:babel-register",
     "lint": "eslint ./src/js",
     "start": "node server.js"
@@ -32,6 +33,7 @@
     "babel-core": "^6.9.1",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -40,16 +42,15 @@
     "eslint": "^2.11.1",
     "eslint-plugin-react": "^5.1.1",
     "mocha": "^2.5.3",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-hot-loader": "^1.3.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0"
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "dateformat": "^1.0.12",
     "lodash": "^4.13.1"
-  },
-  "license": "MIT"
+  }
 }

@@ -4,7 +4,7 @@ var parentsCount = parseInt(args[0]);
 var childrenCount = parseInt(args[1]);
 var children2Count = parseInt(args[2]);
 
-if (!parentsCount || !childrenCount) {
+if (!parentsCount || !childrenCount || !children2Count) {
   // parent count and children count are required
   console.error('Parent count and children count are required');
   process.exit(1);
