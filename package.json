@@ -13,7 +13,8 @@
   },
   "scripts": {
     "dist": "webpack --progress --colors --config dist.config.js",
-    "test": "mocha --watch --recursive --compilers js:babel-register",
+    "test-dev": "mocha --watch --recursive --compilers js:babel-register --require ignore-styles",
+    "test": "mocha --recursive --compilers js:babel-register --require ignore-styles",
     "lint": "eslint ./src/js",
     "start": "node server.js"
   },
@@ -39,10 +40,13 @@
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
+    "enzyme": "^2.4.1",
     "eslint": "^2.11.1",
     "eslint-plugin-react": "^5.1.1",
+    "ignore-styles": "^4.0.0",
     "mocha": "^2.5.3",
     "react": "^15.1.0",
+    "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.1.0",
     "react-hot-loader": "^1.3.0",
     "style-loader": "^0.13.1",
