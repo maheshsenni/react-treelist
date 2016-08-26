@@ -1,6 +1,6 @@
 # react-treelist
 
-A React treelist component to display data in tree structure.
+A React treelist component to display data in tree structure. This is being developed actively and would appreciate your feedback.
 
 [Demo](https://rawgit.com/maheshsenni/react-treelist/master/demo/index.html)
 
