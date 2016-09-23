@@ -2,7 +2,7 @@
   "name": "react-treelist",
   "version": "0.1.2",
   "description": "A React treelist component to display data in tree structure.",
-  "main": "src/js/TreeList.js",
+  "main": "dist/react-treelist.js",
   "homepage": "https://github.com/maheshsenni/react-treelist",
   "bugs": "https://github.com/maheshsenni/react-treelist/issues",
   "license": "MIT",
