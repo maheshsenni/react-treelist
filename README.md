@@ -4,6 +4,13 @@ A React treelist component to display data in tree structure. This is being deve
 
 [Demo](https://rawgit.com/maheshsenni/react-treelist/master/demo/index.html)
 
+## Features
+
+- [x] Resize columns
+- [x] Sort columns
+- [x] Expand all rows by default
+- [ ] Filtering
+
 ## Installation
 
 ```sh
@@ -22,6 +29,41 @@ import TreeList from 'react-treelist';
   id={'id'}
   parentId={'parentId'}></TreeList>
 ```
+
+|Property|Type|Description|
+|--------|----|-----------|
+|`data`|array|Array of data objects which become rows in the treelist|
+|`columns`|array|Array of column configuration options. See [column options](#column-options) for more details.|
+|`options`|object|Component level configuration options. See [component options](#component-options) for more details.|
+|`id`|string|Data field which uniquely identifies each record|
+|`parentId`|string|Data field which identifies the parent row of a record. Data objects with `null` value in this field are treated as top-level parent records|  
+
+See `src/js/index.js` for an example.
+
+## Options
+
+### Column options
+
+The component accepts an array of column objects via the property `columns`. The column objects can accept the following properties.
+
+|Property name|Type|Required|Description|
+|-------------|----|--------|-----------|
+|`title`|string|yes|Will be displayed as column header|
+|`field`|string|yes|Property in the data object whose value will be displayed in the rows against this column|
+|`type`|string|yes|Data type of the values displayed in the column. Required for sorting and applying formatting. Valid values: `number`, `string`, `date`|
+|`width`|number|no|Width of the column|
+|`class`|string|no|Class name to be added to the cells in the column. Can be used for applying specific styles for the column values|
+|`formatter`|function|no|If provided, the return value of this function will be dispayed in the rows for this column. The value of `field` from the data object will be passed as an argument.
+
+### Component options
+
+Component level options are accepted via the property, `options`.
+
+|Property name|Type|Required|Description|
+|-------------|----|--------|-----------|
+|`expandAll`|bool|no|If set to `true` will expand all rows by default when the component is rendered for the first time. Defaults to `false`.
+|`height`|number|no|Height of the treelist body. When not provided, the component will expand to show all available rows.|
+|`minimumColWidth`|number|no|Minimum width of columns. Columns can't be resized below this value.
 
 ## Contributing
 

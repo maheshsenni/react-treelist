@@ -1,12 +1,16 @@
 const getRowsWithChildren = function(data, idField, parentIdField) {
-  const metadata = {};
+  const metadata = {
+    map: {},
+    parentRowIds: []
+  };
 
   data.forEach((d) => {
     if (typeof d[parentIdField] !== 'undefined') {
-      if (typeof metadata[d[parentIdField]] === 'undefined') {
-        metadata[d[parentIdField]] = [];
+      if (typeof metadata.map[d[parentIdField]] === 'undefined') {
+        metadata.map[d[parentIdField]] = [];
+        metadata.parentRowIds.push(d[parentIdField]);
       }
-      metadata[d[parentIdField]].push(d[idField]);
+      metadata.map[d[parentIdField]].push(d[idField]);
     }
   });
 

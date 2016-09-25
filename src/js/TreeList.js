@@ -144,7 +144,8 @@ class TreeList extends Component {
           height={options.height}
           parentIdField={parentId}
           onHScroll={this.onBodyHScroll}
-          updateHash={updateHash}>
+          updateHash={updateHash}
+          expandAll={options.expandAll}>
         </Body>
       </div>
     );

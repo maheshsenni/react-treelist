@@ -19,16 +19,24 @@ class Body extends Component {
     this.state = {
       expandedRows: []
     };
+    this._expandAllComplete = false;
   }
 
-  makeRows(data, metadata, columns, idField, parentIdField) {
+  makeRows(data, metadata, columns, idField, parentIdField, expandAll) {
     // start with first level records
     const rootParents = getRootParents(data, parentIdField);
+
+    // add all parent rows to 'expandedRows' if expandAll
+    // option is true. Only do this for first render
+    if (expandAll && !this._expandAllComplete) {
+      this.state.expandedRows.push(...metadata.parentRowIds);
+      this._expandAllComplete = true;
+    }
 
     const rows = [];
     rootParents.forEach((d) => {
       // parent rows start at level 0
-      rows.push(...this.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField));
+      rows.push(...this.makeRowsRecursive(d, 0, metadata.map, columns, idField, parentIdField));
     });
     return rows;
   }
@@ -56,7 +64,7 @@ class Body extends Component {
     if (this.state.expandedRows.indexOf(rowId) > -1) {
       // expanded and has to be collapsed
       // remove collapsed row and all it's children
-      const children = this.props.metadata[rowId];
+      const children = this.props.metadata.map[rowId];
       const expandedRows = this.state.expandedRows.filter(function(r) {
         if (r === rowId) {
           return false;
@@ -90,9 +98,9 @@ class Body extends Component {
   
   render() {
     const { columns, data, metadata, idField,
-      parentIdField, width, height } = this.props;
+      parentIdField, width, height, expandAll } = this.props;
     const rows = this.makeRows(data, metadata, columns,
-      idField, parentIdField);
+      idField, parentIdField, expandAll);
 
     return (
       <div className='tgrid-body-wrapper'
@@ -117,12 +125,14 @@ Body.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   onHScroll: PropTypes.func.isRequired,
-  updateHash: PropTypes.object
+  updateHash: PropTypes.object,
+  expandAll: PropTypes.bool,
 };
 
 Body.defaultProps = {
   height: null,
-  updateHash: {}
+  updateHash: {},
+  expandAll: false
 };
 
 export default Body;

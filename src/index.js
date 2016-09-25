@@ -36,7 +36,8 @@ const COLUMNS = [{
 
 const OPTIONS = {
   height: 300,
-  minimumColWidth: 100
+  minimumColWidth: 100,
+  expandAll: true
 };
 
 class App extends React.Component {
