@@ -253,7 +253,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          height: options.height,
 	          parentIdField: parentId,
 	          onHScroll: this.onBodyHScroll,
-	          updateHash: updateHash })
+	          updateHash: updateHash,
+	          expandAll: options.expandAll })
 	      );
 	    }
 	  }]);
@@ -600,14 +601,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	var getRowsWithChildren = function getRowsWithChildren(data, idField, parentIdField) {
-	  var metadata = {};
+	  var metadata = {
+	    map: {},
+	    parentRowIds: []
+	  };
 
 	  data.forEach(function (d) {
 	    if (typeof d[parentIdField] !== 'undefined') {
-	      if (typeof metadata[d[parentIdField]] === 'undefined') {
-	        metadata[d[parentIdField]] = [];
+	      if (typeof metadata.map[d[parentIdField]] === 'undefined') {
+	        metadata.map[d[parentIdField]] = [];
+	        metadata.parentRowIds.push(d[parentIdField]);
 	      }
-	      metadata[d[parentIdField]].push(d[idField]);
+	      metadata.map[d[parentIdField]].push(d[idField]);
 	    }
 	  });
 
@@ -794,21 +799,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.state = {
 	      expandedRows: []
 	    };
+	    _this._expandAllComplete = false;
 	    return _this;
 	  }
 
 	  _createClass(Body, [{
 	    key: 'makeRows',
-	    value: function makeRows(data, metadata, columns, idField, parentIdField) {
+	    value: function makeRows(data, metadata, columns, idField, parentIdField, expandAll) {
 	      var _this2 = this;
 
 	      // start with first level records
 	      var rootParents = (0, _TreeUtils.getRootParents)(data, parentIdField);
 
+	      // add all parent rows to 'expandedRows' if expandAll
+	      // option is true. Only do this for first render
+	      if (expandAll && !this._expandAllComplete) {
+	        var _state$expandedRows;
+
+	        (_state$expandedRows = this.state.expandedRows).push.apply(_state$expandedRows, _toConsumableArray(metadata.parentRowIds));
+	        this._expandAllComplete = true;
+	      }
+
 	      var rows = [];
 	      rootParents.forEach(function (d) {
 	        // parent rows start at level 0
-	        rows.push.apply(rows, _toConsumableArray(_this2.makeRowsRecursive(d, 0, metadata, columns, idField, parentIdField)));
+	        rows.push.apply(rows, _toConsumableArray(_this2.makeRowsRecursive(d, 0, metadata.map, columns, idField, parentIdField)));
 	      });
 	      return rows;
 	    }
@@ -841,7 +856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        (function () {
 	          // expanded and has to be collapsed
 	          // remove collapsed row and all it's children
-	          var children = _this4.props.metadata[rowId];
+	          var children = _this4.props.metadata.map[rowId];
 	          var expandedRows = _this4.state.expandedRows.filter(function (r) {
 	            if (r === rowId) {
 	              return false;
@@ -884,8 +899,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var parentIdField = _props.parentIdField;
 	      var width = _props.width;
 	      var height = _props.height;
+	      var expandAll = _props.expandAll;
 
-	      var rows = this.makeRows(data, metadata, columns, idField, parentIdField);
+	      var rows = this.makeRows(data, metadata, columns, idField, parentIdField, expandAll);
 
 	      return _react2.default.createElement(
 	        'div',
@@ -917,12 +933,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  width: _react.PropTypes.number,
 	  height: _react.PropTypes.number,
 	  onHScroll: _react.PropTypes.func.isRequired,
-	  updateHash: _react.PropTypes.object
+	  updateHash: _react.PropTypes.object,
+	  expandAll: _react.PropTypes.bool
 	};
 
 	Body.defaultProps = {
 	  height: null,
-	  updateHash: {}
+	  updateHash: {},
+	  expandAll: false
 	};
 
 	exports.default = Body;
