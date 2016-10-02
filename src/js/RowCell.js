@@ -1,18 +1,18 @@
 import '../css/row-cell.css';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import RowIndent from './RowIndent';
 import dateFormat from 'dateFormat';
 
-class RowCell extends React.Component {
+class RowCell extends Component {
   constructor(props) {
     super(props);
     this.displayName = 'RowCell';
   }
   render() {
     const {
-      index,
       reactKey,
       indent,
+      useIndent,
       data,
       type,
       format,
@@ -25,22 +25,22 @@ class RowCell extends React.Component {
 
     // indentation dummies
     let rowIndent = null;
-    if (index === 0) {
+    if (useIndent) {
       rowIndent = <RowIndent indent={indent} reactKey={reactKey}></RowIndent>;
     }
 
     // expand or collapse icon
     let expandToggleIcon = null;
-    if (index === 0 && showExpandCollapse && !isExpanded) {
+    if (showExpandCollapse && !isExpanded) {
       expandToggleIcon = <span className='i-expand' onClick={onExpandToggle}>+</span>;
-    } else if (index === 0 && showExpandCollapse && isExpanded) {
+    } else if (showExpandCollapse && isExpanded) {
       expandToggleIcon = <span className='i-collapse' onClick={onExpandToggle}>-</span>;
-    } else if (index === 0 && !showExpandCollapse) {
+    } else if (!showExpandCollapse) {
       expandToggleIcon = <span className='i-dummy'></span>;
     }
 
     let displayText = data;
-    if (type === 'date') {
+    if (type === 'date' && typeof data !== 'undefined') {
       displayText = dateFormat(data, format);
     }
 
@@ -59,17 +59,17 @@ class RowCell extends React.Component {
 }
 
 RowCell.propTypes = {
-  reactKey: React.PropTypes.string.isRequired,
-  index: React.PropTypes.number.isRequired,
-  indent: React.PropTypes.number.isRequired,
-  data: React.PropTypes.any,
-  type: React.PropTypes.string,
-  format: React.PropTypes.string,
-  formatter: React.PropTypes.func,
-  className: React.PropTypes.string,
-  showExpandCollapse: React.PropTypes.bool,
-  isExpanded: React.PropTypes.bool,
-  onExpandToggle: React.PropTypes.func
+  reactKey: PropTypes.string.isRequired,
+  indent: PropTypes.number,
+  useIndent: PropTypes.bool,
+  data: PropTypes.any,
+  type: PropTypes.string,
+  format: PropTypes.string,
+  formatter: PropTypes.func,
+  className: PropTypes.string,
+  showExpandCollapse: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  onExpandToggle: PropTypes.func
 };
 
 RowCell.defaultProps = {

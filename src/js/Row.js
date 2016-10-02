@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import RowCell from './RowCell';
 
-class Row extends React.Component {
+class Row extends Component {
   constructor(props) {
     super(props);
     this.displayName = 'Row';
@@ -13,19 +13,30 @@ class Row extends React.Component {
   }
 
   makeCells(columns, data, canExpand) {
+    // check if a column is specified to show
+    // expand collapse icon
+    let expandColumn = columns.filter((col) => {
+      return col.expand;
+    })[0];
+    // use first columns as default to show
+    // expand collapse icon
+    if (typeof expandColumn === 'undefined') {
+      expandColumn = columns[0];
+    }
+
     return columns.map((col, index) => {
       return (
         <RowCell
           key={this.props.reactKey + '-col-' + index}
           reactKey={this.props.reactKey + '-col-' + index}
-          index={index}
           indent={this.props.level}
+          useIndent={expandColumn.field === col.field}
           data={data[col.field]}
           type={col.type}
           format={col.format}
           formatter={col.formatter}
           className={col.class}
-          showExpandCollapse={canExpand}
+          showExpandCollapse={canExpand && (expandColumn.field === col.field)}
           isExpanded={this.props.expanded}
           onExpandToggle={this.handleExpandToggle}></RowCell>
       );
@@ -43,13 +54,13 @@ class Row extends React.Component {
 }
 
 Row.propTypes = {
-  reactKey: React.PropTypes.string.isRequired,
-  columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.object.isRequired,
-  level: React.PropTypes.number.isRequired,
-  canExpand: React.PropTypes.bool.isRequired,
-  expanded: React.PropTypes.bool,
-  onExpandToggle: React.PropTypes.func
+  reactKey: PropTypes.string.isRequired,
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.object.isRequired,
+  level: PropTypes.number.isRequired,
+  canExpand: PropTypes.bool.isRequired,
+  expanded: PropTypes.bool,
+  onExpandToggle: PropTypes.func
 };
 
 const createRow = function(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler) {

@@ -12,7 +12,8 @@ const COLUMNS = [{
 }, {
   title: 'First Name',
   field: 'firstName',
-  type: 'string'
+  type: 'string',
+  expand: true,
 }, {
   title: 'Last Name',
   field: 'lastName',

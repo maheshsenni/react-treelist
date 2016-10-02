@@ -1926,8 +1926,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Row = function (_React$Component) {
-	  _inherits(Row, _React$Component);
+	var Row = function (_Component) {
+	  _inherits(Row, _Component);
 
 	  function Row(props) {
 	    _classCallCheck(this, Row);
@@ -1949,18 +1949,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function makeCells(columns, data, canExpand) {
 	      var _this2 = this;
 
+	      // check if a column is specified to show
+	      // expand collapse icon
+	      var expandColumn = columns.filter(function (col) {
+	        return col.expand;
+	      })[0];
+	      // use first columns as default to show
+	      // expand collapse icon
+	      if (typeof expandColumn === 'undefined') {
+	        expandColumn = columns[0];
+	      }
+
 	      return columns.map(function (col, index) {
 	        return _react2.default.createElement(_RowCell2.default, {
 	          key: _this2.props.reactKey + '-col-' + index,
 	          reactKey: _this2.props.reactKey + '-col-' + index,
-	          index: index,
 	          indent: _this2.props.level,
+	          useIndent: expandColumn.field === col.field,
 	          data: data[col.field],
 	          type: col.type,
 	          format: col.format,
 	          formatter: col.formatter,
 	          className: col.class,
-	          showExpandCollapse: canExpand,
+	          showExpandCollapse: canExpand && expandColumn.field === col.field,
 	          isExpanded: _this2.props.expanded,
 	          onExpandToggle: _this2.handleExpandToggle });
 	      });
@@ -1984,16 +1995,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 
 	  return Row;
-	}(_react2.default.Component);
+	}(_react.Component);
 
 	Row.propTypes = {
-	  reactKey: _react2.default.PropTypes.string.isRequired,
-	  columns: _react2.default.PropTypes.array.isRequired,
-	  data: _react2.default.PropTypes.object.isRequired,
-	  level: _react2.default.PropTypes.number.isRequired,
-	  canExpand: _react2.default.PropTypes.bool.isRequired,
-	  expanded: _react2.default.PropTypes.bool,
-	  onExpandToggle: _react2.default.PropTypes.func
+	  reactKey: _react.PropTypes.string.isRequired,
+	  columns: _react.PropTypes.array.isRequired,
+	  data: _react.PropTypes.object.isRequired,
+	  level: _react.PropTypes.number.isRequired,
+	  canExpand: _react.PropTypes.bool.isRequired,
+	  expanded: _react.PropTypes.bool,
+	  onExpandToggle: _react.PropTypes.func
 	};
 
 	var createRow = function createRow(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler) {
@@ -2045,8 +2056,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var RowCell = function (_React$Component) {
-	  _inherits(RowCell, _React$Component);
+	var RowCell = function (_Component) {
+	  _inherits(RowCell, _Component);
 
 	  function RowCell(props) {
 	    _classCallCheck(this, RowCell);
@@ -2061,9 +2072,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
-	      var index = _props.index;
 	      var reactKey = _props.reactKey;
 	      var indent = _props.indent;
+	      var useIndent = _props.useIndent;
 	      var data = _props.data;
 	      var type = _props.type;
 	      var format = _props.format;
@@ -2076,30 +2087,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // indentation dummies
 
 	      var rowIndent = null;
-	      if (index === 0) {
+	      if (useIndent) {
 	        rowIndent = _react2.default.createElement(_RowIndent2.default, { indent: indent, reactKey: reactKey });
 	      }
 
 	      // expand or collapse icon
 	      var expandToggleIcon = null;
-	      if (index === 0 && showExpandCollapse && !isExpanded) {
+	      if (showExpandCollapse && !isExpanded) {
 	        expandToggleIcon = _react2.default.createElement(
 	          'span',
 	          { className: 'i-expand', onClick: onExpandToggle },
 	          '+'
 	        );
-	      } else if (index === 0 && showExpandCollapse && isExpanded) {
+	      } else if (showExpandCollapse && isExpanded) {
 	        expandToggleIcon = _react2.default.createElement(
 	          'span',
 	          { className: 'i-collapse', onClick: onExpandToggle },
 	          '-'
 	        );
-	      } else if (index === 0 && !showExpandCollapse) {
+	      } else if (!showExpandCollapse) {
 	        expandToggleIcon = _react2.default.createElement('span', { className: 'i-dummy' });
 	      }
 
 	      var displayText = data;
-	      if (type === 'date') {
+	      if (type === 'date' && typeof data !== 'undefined') {
 	        displayText = (0, _dateFormat2.default)(data, format);
 	      }
 
@@ -2122,20 +2133,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 
 	  return RowCell;
-	}(_react2.default.Component);
+	}(_react.Component);
 
 	RowCell.propTypes = {
-	  reactKey: _react2.default.PropTypes.string.isRequired,
-	  index: _react2.default.PropTypes.number.isRequired,
-	  indent: _react2.default.PropTypes.number.isRequired,
-	  data: _react2.default.PropTypes.any,
-	  type: _react2.default.PropTypes.string,
-	  format: _react2.default.PropTypes.string,
-	  formatter: _react2.default.PropTypes.func,
-	  className: _react2.default.PropTypes.string,
-	  showExpandCollapse: _react2.default.PropTypes.bool,
-	  isExpanded: _react2.default.PropTypes.bool,
-	  onExpandToggle: _react2.default.PropTypes.func
+	  reactKey: _react.PropTypes.string.isRequired,
+	  indent: _react.PropTypes.number,
+	  useIndent: _react.PropTypes.bool,
+	  data: _react.PropTypes.any,
+	  type: _react.PropTypes.string,
+	  format: _react.PropTypes.string,
+	  formatter: _react.PropTypes.func,
+	  className: _react.PropTypes.string,
+	  showExpandCollapse: _react.PropTypes.bool,
+	  isExpanded: _react.PropTypes.bool,
+	  onExpandToggle: _react.PropTypes.func
 	};
 
 	RowCell.defaultProps = {
