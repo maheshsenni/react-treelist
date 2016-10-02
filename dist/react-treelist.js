@@ -2044,9 +2044,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _RowIndent2 = _interopRequireDefault(_RowIndent);
 
-	var _dateFormat = __webpack_require__(30);
+	var _dateformat = __webpack_require__(30);
 
-	var _dateFormat2 = _interopRequireDefault(_dateFormat);
+	var _dateformat2 = _interopRequireDefault(_dateformat);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2111,7 +2111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var displayText = data;
 	      if (type === 'date' && typeof data !== 'undefined') {
-	        displayText = (0, _dateFormat2.default)(data, format);
+	        displayText = (0, _dateformat2.default)(data, format);
 	      }
 
 	      if (typeof formatter === 'function') {

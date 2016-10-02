@@ -1,7 +1,7 @@
 import '../css/row-cell.css';
 import React, { Component, PropTypes } from 'react';
 import RowIndent from './RowIndent';
-import dateFormat from 'dateFormat';
+import dateFormat from 'dateformat';
 
 class RowCell extends Component {
   constructor(props) {
