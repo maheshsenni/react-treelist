@@ -1,8 +1,8 @@
 # react-treelist [![Build Status](https://travis-ci.org/maheshsenni/react-treelist.svg?branch=master)](https://travis-ci.org/maheshsenni/react-treelist)
 
-A React treelist component to display data in tree structure. This is being developed actively and would appreciate your feedback.
+A React treelist component to display data in tree structure.
 
-[Demo](https://rawgit.com/maheshsenni/react-treelist/master/demo/index.html)
+[Demo](https://maheshsenni.github.io/react-treelist/)
 
 ## Features
 
