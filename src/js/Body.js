@@ -3,6 +3,7 @@ import '../css/body.css';
 import React, { Component, PropTypes } from 'react';
 import Colgroup from './Colgroup';
 import { Row, createRow } from './Row';
+import VirtualScrollContainer from './VirtualScrollContainer';
 import { getRootParents, getChildren } from './util/TreeUtils';
 
 const _isExpanded = function(rowId, expandedRows) {
@@ -95,7 +96,7 @@ class Body extends Component {
       nextState.expandedRows.length !== this.state.expandedRows.length ||
       nextProps.updateHash.sort !== this.props.updateHash.sort;
   }
-  
+
   render() {
     const { columns, data, metadata, idField,
       parentIdField, width, height, expandAll } = this.props;
@@ -107,9 +108,11 @@ class Body extends Component {
         onScroll={this.onHorizontalScroll} style={{ height: height }}>
         <table className='tgrid-body-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
-          <tbody>
-            {rows}
-          </tbody>
+            <VirtualScrollContainer
+              items={rows}
+              itemHeight={34}
+              containerTagName={'tbody'}
+              containerHeight={height}/>
         </table>
       </div>
     );
