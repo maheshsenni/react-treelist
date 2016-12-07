@@ -6,6 +6,7 @@
   position: relative;
   overflow: hidden;
   border-right: 1px solid #e6e6e6;
+  will-change: scroll-position;
 }
 
 .tgrid-header-table {

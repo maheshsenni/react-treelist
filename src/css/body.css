@@ -1,6 +1,7 @@
 .tgrid-body-wrapper {
   overflow-y: scroll;
   overflow-x: auto;
+  will-change: transform;
 }
 
 .tgrid-body-table {
