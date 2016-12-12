@@ -3,7 +3,6 @@ import '../css/body.css';
 import React, { Component, PropTypes } from 'react';
 import Colgroup from './Colgroup';
 import { Row, createRow } from './Row';
-import VirtualScrollContainer from './VirtualScrollContainer';
 import { getRootParents, getChildren } from './util/TreeUtils';
 
 const _isExpanded = function(rowId, expandedRows) {
@@ -16,10 +15,13 @@ class Body extends Component {
     super(props);
     this.displayName = 'Body';
     this.handleExpandToggle = this.handleExpandToggle.bind(this);
-    this.onHorizontalScroll = this.onHorizontalScroll.bind(this);
+    this.onScroll = this.onScroll.bind(this);
     this.state = {
-      expandedRows: []
+      expandedRows: [],
+      scrollTop: 0,
+      scrollLeft: 0
     };
+    this._scrolling = false;
     this._expandAllComplete = false;
   }
 
@@ -84,15 +86,52 @@ class Body extends Component {
     }
   }
 
-  onHorizontalScroll(event) {
-    this.props.onHScroll(event.target.scrollLeft);
+  onScroll(event) {
+    const { scrollLeft, scrollTop } = event.target;
+    this._scrollLeft = scrollLeft;
+    this._scrollTop = scrollTop;
+    this.requestScrollUpdate();
+  }
+
+  requestScrollUpdate() {
+    if (!this._scrolling) {
+      requestAnimationFrame(this.scrollUpdate.bind(this));
+    }
+    this._scrolling = true;
+  }
+
+  scrollUpdate() {
+    this._scrolling = false;
+    const { _scrollLeft, _scrollTop } = this;
+    if (this.state.scrollLeft !== _scrollLeft) {
+      this.props.onHScroll(_scrollLeft);
+      this.setState({ scrollLeft: _scrollLeft });
+    }
+    if (this.state.scrollTop !== _scrollTop) {
+      this.setState({ scrollTop: _scrollTop });
+    }
+  }
+
+  getVisibleRowsRange(totalRows) {
+    const { scrollTop, scrollLeft } = this.state;
+    const { itemHeight, height } = this.props;
+
+    const rowsInView = Math.ceil(height/itemHeight);
+    const startIndex = Math.ceil(scrollTop/itemHeight);
+    const totalHeight = totalRows * itemHeight;
+    const topFillerHeight = scrollTop;
+    const bottomFillerHeight = totalHeight - topFillerHeight - height;
+
+    return [startIndex, startIndex + rowsInView, topFillerHeight, bottomFillerHeight];
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     // adding this as scroll causes re-render
     // checking just expanded rows for now, can add
     // 'data' in future
-    return nextProps.width !== this.props.width ||
+    return nextState.scrollTop !== this.state.scrollTop ||
+      nextState.scrollLeft !== this.state.scrollLeft ||
+      nextProps.width !== this.props.width ||
       nextState.expandedRows.length !== this.state.expandedRows.length ||
       nextProps.updateHash.sort !== this.props.updateHash.sort;
   }
@@ -100,19 +139,24 @@ class Body extends Component {
   render() {
     const { columns, data, metadata, idField,
       parentIdField, width, height, expandAll } = this.props;
+
     const rows = this.makeRows(data, metadata, columns,
       idField, parentIdField, expandAll);
 
+    const [startIndex, endIndex,
+      topFillerHeight, bottomFillerHeight] = this.getVisibleRowsRange(rows.length);
+    const visibleRows = rows.slice(startIndex, endIndex);
+
     return (
       <div className='tgrid-body-wrapper'
-        onScroll={this.onHorizontalScroll} style={{ height: height }}>
+        onScroll={this.onScroll} style={{ height: height }}>
         <table className='tgrid-body-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
-            <VirtualScrollContainer
-              items={rows}
-              itemHeight={34}
-              containerTagName={'tbody'}
-              containerHeight={height}/>
+          <tbody>
+            <tr style={{ height: topFillerHeight }}></tr>
+            {visibleRows}
+            <tr style={{ height: bottomFillerHeight }}></tr>
+          </tbody>
         </table>
       </div>
     );
@@ -130,12 +174,14 @@ Body.propTypes = {
   onHScroll: PropTypes.func.isRequired,
   updateHash: PropTypes.object,
   expandAll: PropTypes.bool,
+  itemHeight: PropTypes.number
 };
 
 Body.defaultProps = {
   height: null,
   updateHash: {},
-  expandAll: false
+  expandAll: false,
+  itemHeight: 35
 };
 
 export default Body;

@@ -36,7 +36,7 @@ const COLUMNS = [{
 }];
 
 const OPTIONS = {
-  height: 300,
+  height: 350,
   minimumColWidth: 100,
   expandAll: true
 };
