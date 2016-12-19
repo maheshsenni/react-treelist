@@ -755,6 +755,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	__webpack_require__(32);
@@ -795,10 +797,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _this.displayName = 'Body';
 	    _this.handleExpandToggle = _this.handleExpandToggle.bind(_this);
-	    _this.onHorizontalScroll = _this.onHorizontalScroll.bind(_this);
+	    _this.onScroll = _this.onScroll.bind(_this);
 	    _this.state = {
-	      expandedRows: []
+	      expandedRows: [],
+	      scrollTop: 0,
+	      scrollLeft: 0
 	    };
+	    _this._scrolling = false;
 	    _this._expandAllComplete = false;
 	    return _this;
 	  }
@@ -876,9 +881,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'onHorizontalScroll',
-	    value: function onHorizontalScroll(event) {
-	      this.props.onHScroll(event.target.scrollLeft);
+	    key: 'onScroll',
+	    value: function onScroll(event) {
+	      var _event$target = event.target;
+	      var scrollLeft = _event$target.scrollLeft;
+	      var scrollTop = _event$target.scrollTop;
+
+	      this._scrollLeft = scrollLeft;
+	      this._scrollTop = scrollTop;
+	      this.requestScrollUpdate();
+	    }
+	  }, {
+	    key: 'requestScrollUpdate',
+	    value: function requestScrollUpdate() {
+	      if (!this._scrolling) {
+	        requestAnimationFrame(this.scrollUpdate.bind(this));
+	      }
+	      this._scrolling = true;
+	    }
+	  }, {
+	    key: 'scrollUpdate',
+	    value: function scrollUpdate() {
+	      this._scrolling = false;
+	      var _scrollLeft = this._scrollLeft;
+	      var _scrollTop = this._scrollTop;
+
+	      if (this.state.scrollLeft !== _scrollLeft) {
+	        this.props.onHScroll(_scrollLeft);
+	        this.setState({ scrollLeft: _scrollLeft });
+	      }
+	      if (this.state.scrollTop !== _scrollTop) {
+	        this.setState({ scrollTop: _scrollTop });
+	      }
+	    }
+	  }, {
+	    key: 'getVisibleRowsRange',
+	    value: function getVisibleRowsRange(totalRows) {
+	      var _state = this.state;
+	      var scrollTop = _state.scrollTop;
+	      var scrollLeft = _state.scrollLeft;
+	      var _props = this.props;
+	      var itemHeight = _props.itemHeight;
+	      var height = _props.height;
+
+
+	      var rowsInView = Math.floor(height / itemHeight);
+	      var startIndex = Math.floor(scrollTop / itemHeight);
+
+	      startIndex = Math.max(0, startIndex - rowsInView);
+	      var endIndex = startIndex + rowsInView * 3;
+	      endIndex = Math.min(endIndex, totalRows);
+
+	      var totalHeight = totalRows * itemHeight;
+	      var topFillerHeight = startIndex * itemHeight;
+	      var renderedRowsHeight = (endIndex - startIndex) * itemHeight;
+	      var bottomFillerHeight = totalHeight - topFillerHeight - renderedRowsHeight;
+
+	      return [startIndex, endIndex, topFillerHeight, bottomFillerHeight];
 	    }
 	  }, {
 	    key: 'shouldComponentUpdate',
@@ -886,27 +945,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // adding this as scroll causes re-render
 	      // checking just expanded rows for now, can add
 	      // 'data' in future
-	      return nextProps.width !== this.props.width || nextState.expandedRows.length !== this.state.expandedRows.length || nextProps.updateHash.sort !== this.props.updateHash.sort;
+	      return nextState.scrollTop !== this.state.scrollTop || nextState.scrollLeft !== this.state.scrollLeft || nextProps.width !== this.props.width || nextState.expandedRows.length !== this.state.expandedRows.length || nextProps.updateHash.sort !== this.props.updateHash.sort;
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props = this.props;
-	      var columns = _props.columns;
-	      var data = _props.data;
-	      var metadata = _props.metadata;
-	      var idField = _props.idField;
-	      var parentIdField = _props.parentIdField;
-	      var width = _props.width;
-	      var height = _props.height;
-	      var expandAll = _props.expandAll;
+	      var _props2 = this.props;
+	      var columns = _props2.columns;
+	      var data = _props2.data;
+	      var metadata = _props2.metadata;
+	      var idField = _props2.idField;
+	      var parentIdField = _props2.parentIdField;
+	      var width = _props2.width;
+	      var height = _props2.height;
+	      var expandAll = _props2.expandAll;
+
 
 	      var rows = this.makeRows(data, metadata, columns, idField, parentIdField, expandAll);
+
+	      var _getVisibleRowsRange = this.getVisibleRowsRange(rows.length);
+
+	      var _getVisibleRowsRange2 = _slicedToArray(_getVisibleRowsRange, 4);
+
+	      var startIndex = _getVisibleRowsRange2[0];
+	      var endIndex = _getVisibleRowsRange2[1];
+	      var topFillerHeight = _getVisibleRowsRange2[2];
+	      var bottomFillerHeight = _getVisibleRowsRange2[3];
+
+	      var visibleRows = rows.slice(startIndex, endIndex);
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'tgrid-body-wrapper',
-	          onScroll: this.onHorizontalScroll, style: { height: height } },
+	          onScroll: this.onScroll, style: { height: height } },
 	        _react2.default.createElement(
 	          'table',
 	          { className: 'tgrid-body-table', style: { width: width } },
@@ -914,7 +985,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _react2.default.createElement(
 	            'tbody',
 	            null,
-	            rows
+	            _react2.default.createElement('tr', { style: { height: topFillerHeight } }),
+	            visibleRows,
+	            _react2.default.createElement('tr', { style: { height: bottomFillerHeight } })
 	          )
 	        )
 	      );
@@ -934,13 +1007,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  height: _react.PropTypes.number,
 	  onHScroll: _react.PropTypes.func.isRequired,
 	  updateHash: _react.PropTypes.object,
-	  expandAll: _react.PropTypes.bool
+	  expandAll: _react.PropTypes.bool,
+	  itemHeight: _react.PropTypes.number
 	};
 
 	Body.defaultProps = {
 	  height: null,
 	  updateHash: {},
-	  expandAll: false
+	  expandAll: false,
+	  itemHeight: 35
 	};
 
 	exports.default = Body;
@@ -2094,17 +2169,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // expand or collapse icon
 	      var expandToggleIcon = null;
 	      if (showExpandCollapse && !isExpanded) {
-	        expandToggleIcon = _react2.default.createElement(
-	          'span',
-	          { className: 'i-expand', onClick: onExpandToggle },
-	          '+'
-	        );
+	        expandToggleIcon = _react2.default.createElement('span', { className: 'i-expand', onClick: onExpandToggle });
 	      } else if (showExpandCollapse && isExpanded) {
-	        expandToggleIcon = _react2.default.createElement(
-	          'span',
-	          { className: 'i-collapse', onClick: onExpandToggle },
-	          '-'
-	        );
+	        expandToggleIcon = _react2.default.createElement('span', { className: 'i-collapse', onClick: onExpandToggle });
 	      } else if (!showExpandCollapse) {
 	        expandToggleIcon = _react2.default.createElement('span', { className: 'i-dummy' });
 	      }
@@ -2446,7 +2513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".tgrid-body-wrapper {\n  overflow-y: scroll;\n  overflow-x: auto;\n}\n\n.tgrid-body-table {\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: collapse;\n}\n\n.tgrid-body-table tr {\n  border-bottom: 1px solid #e6e6e6;\n}\n", ""]);
+	exports.push([module.id, ".tgrid-body-wrapper {\n  overflow-y: scroll;\n  overflow-x: auto;\n  will-change: transform;\n}\n\n.tgrid-body-table {\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: collapse;\n}\n\n.tgrid-body-table tr {\n  border-bottom: 1px solid #e6e6e6;\n}\n", ""]);
 
 	// exports
 
@@ -2502,7 +2569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".tgrid-header {\n  background-color: #fafafa;\n}\n\n.tgrid-header-wrapper {\n  position: relative;\n  overflow: hidden;\n  border-right: 1px solid #e6e6e6;\n}\n\n.tgrid-header-table {\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: collapse;\n  background-color: #fafafa;\n}", ""]);
+	exports.push([module.id, ".tgrid-header {\n  background-color: #fafafa;\n}\n\n.tgrid-header-wrapper {\n  position: relative;\n  overflow: hidden;\n  border-right: 1px solid #e6e6e6;\n  will-change: scroll-position;\n}\n\n.tgrid-header-table {\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: collapse;\n  background-color: #fafafa;\n}\n", ""]);
 
 	// exports
 
@@ -2544,7 +2611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".tgrid-data-cell {\n  padding: 0.5em 0.75em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n.i-expand, .i-collapse {\n  margin-right: 5px;\n  width: 10px;\n  display: inline-block;\n  cursor: pointer;\n}\n\n.i-dummy {\n  display: inline-block;\n  width: 15px;\n}", ""]);
+	exports.push([module.id, ".tgrid-data-cell {\n  padding: 0.5em 0.75em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n.i-expand, .i-collapse {\n  width: 0;\n  height: 0;\n  cursor: pointer;\n  margin-right: 10px;\n  display: inline-block;\n  border-style: solid;\n  border-width: 5px 0 5px 5px;\n  border-color: transparent transparent transparent #aaa;\n}\n\n.i-collapse {\n  -webkit-transform: rotate(45deg);\n  -moz-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  -o-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n\n.i-dummy {\n  display: inline-block;\n  width: 15px;\n}", ""]);
 
 	// exports
 
