@@ -153,16 +153,25 @@ class Body extends Component {
       topFillerHeight, bottomFillerHeight] = this.getVisibleRowsRange(rows.length);
     const visibleRows = rows.slice(startIndex, endIndex);
 
+    let tableBody;
+    if (typeof height === 'number') {
+      tableBody = (
+        <tbody>
+          <tr style={{ height: topFillerHeight }}></tr>
+          {visibleRows}
+          <tr style={{ height: bottomFillerHeight }}></tr>
+        </tbody>
+      );
+    } else {
+      tableBody = <tbody>{rows}</tbody>;
+    }
+
     return (
       <div className='tgrid-body-wrapper'
         onScroll={this.onScroll} style={{ height: height }}>
         <table className='tgrid-body-table' style={{ width: width}}>
           <Colgroup columns={columns}></Colgroup>
-          <tbody>
-            <tr style={{ height: topFillerHeight }}></tr>
-            {visibleRows}
-            <tr style={{ height: bottomFillerHeight }}></tr>
-          </tbody>
+          {tableBody}
         </table>
       </div>
     );
