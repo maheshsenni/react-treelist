@@ -79,4 +79,4 @@ var tree = prepareData(parentsCount, childrenCount, children2Count);
 //   }
 // }
 
-console.dir(tree);
+console.log(JSON.stringify(tree, null, '  '));
