@@ -116,13 +116,19 @@ class Body extends Component {
     const { scrollTop, scrollLeft } = this.state;
     const { itemHeight, height } = this.props;
 
-    const rowsInView = Math.ceil(height/itemHeight);
-    const startIndex = Math.ceil(scrollTop/itemHeight);
-    const totalHeight = totalRows * itemHeight;
-    const topFillerHeight = scrollTop;
-    const bottomFillerHeight = totalHeight - topFillerHeight - height;
+    const rowsInView = Math.floor(height/itemHeight);
+    let startIndex = Math.floor(scrollTop/itemHeight);
 
-    return [startIndex, startIndex + rowsInView, topFillerHeight, bottomFillerHeight];
+    startIndex = Math.max(0, startIndex - rowsInView);
+    let endIndex = startIndex + (rowsInView * 3);
+    endIndex = Math.min(endIndex, totalRows);
+
+    const totalHeight = totalRows * itemHeight;
+    const topFillerHeight = startIndex * itemHeight;
+    const renderedRowsHeight = (endIndex - startIndex) * itemHeight;
+    const bottomFillerHeight = totalHeight - topFillerHeight - renderedRowsHeight;
+
+    return [startIndex, endIndex, topFillerHeight, bottomFillerHeight];
   }
 
   shouldComponentUpdate(nextProps, nextState) {
