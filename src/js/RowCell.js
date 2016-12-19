@@ -32,9 +32,9 @@ class RowCell extends Component {
     // expand or collapse icon
     let expandToggleIcon = null;
     if (showExpandCollapse && !isExpanded) {
-      expandToggleIcon = <span className='i-expand' onClick={onExpandToggle}>+</span>;
+      expandToggleIcon = <span className='i-expand' onClick={onExpandToggle}></span>;
     } else if (showExpandCollapse && isExpanded) {
-      expandToggleIcon = <span className='i-collapse' onClick={onExpandToggle}>-</span>;
+      expandToggleIcon = <span className='i-collapse' onClick={onExpandToggle}></span>;
     } else if (!showExpandCollapse) {
       expandToggleIcon = <span className='i-dummy'></span>;
     }
