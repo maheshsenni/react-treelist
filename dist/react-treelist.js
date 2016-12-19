@@ -974,6 +974,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var visibleRows = rows.slice(startIndex, endIndex);
 
+	      var tableBody = void 0;
+	      if (typeof height === 'number') {
+	        tableBody = _react2.default.createElement(
+	          'tbody',
+	          null,
+	          _react2.default.createElement('tr', { style: { height: topFillerHeight } }),
+	          visibleRows,
+	          _react2.default.createElement('tr', { style: { height: bottomFillerHeight } })
+	        );
+	      } else {
+	        tableBody = _react2.default.createElement(
+	          'tbody',
+	          null,
+	          rows
+	        );
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'tgrid-body-wrapper',
@@ -982,13 +999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'table',
 	          { className: 'tgrid-body-table', style: { width: width } },
 	          _react2.default.createElement(_Colgroup2.default, { columns: columns }),
-	          _react2.default.createElement(
-	            'tbody',
-	            null,
-	            _react2.default.createElement('tr', { style: { height: topFillerHeight } }),
-	            visibleRows,
-	            _react2.default.createElement('tr', { style: { height: bottomFillerHeight } })
-	          )
+	          tableBody
 	        )
 	      );
 	    }
