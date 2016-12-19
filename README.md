@@ -1,15 +1,15 @@
 # react-treelist [![Build Status](https://travis-ci.org/maheshsenni/react-treelist.svg?branch=master)](https://travis-ci.org/maheshsenni/react-treelist)
 
-A React treelist component to display data in tree structure.
+A React treelist component to display data in tree structure. Uses virtual scrolling to display large data sets without performance issues.
 
 [Demo](https://maheshsenni.github.io/react-treelist/)
 
 ## Features
 
-- [x] Resize columns
-- [x] Sort columns
-- [x] Expand all rows by default
-- [ ] Filtering
+* Display large data sets
+* Resize columns
+* Sort columns
+* Expand all rows by default
 
 ## Installation
 
@@ -76,5 +76,4 @@ Component level options are accepted via the property, `options`.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
