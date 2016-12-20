@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 
 // Sort on multiple fields solution from
 // http://blog.falafel.com/nifty-underscore-tricks-sorting-by-multiple-properties-with-underscore/

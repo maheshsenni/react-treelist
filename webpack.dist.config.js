@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+
 var SRC_DIR = path.resolve(__dirname, 'src');
 var DIST_DIR = path.resolve(__dirname, 'dist');
 
@@ -33,6 +35,8 @@ module.exports = {
     }
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(true)
+    new LodashModuleReplacementPlugin,
+    new webpack.optimize.OccurenceOrderPlugin(true),
+    new webpack.optimize.UglifyJsPlugin
   ]
 };
