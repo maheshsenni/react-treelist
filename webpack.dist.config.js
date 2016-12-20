@@ -35,7 +35,10 @@ module.exports = {
     }
   },
   plugins: [
-    new LodashModuleReplacementPlugin,
+    new LodashModuleReplacementPlugin({
+      'collections': true,
+      'shorthands': true
+    }),
     new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.UglifyJsPlugin
   ]
