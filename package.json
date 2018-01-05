@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "dateformat": "^1.0.12",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "object-hash": "^1.2.0"
   }
 }

@@ -1,5 +1,6 @@
 import '../css/treegrid.css';
 import React, { Component, PropTypes } from 'react';
+import hash from 'object-hash';
 import Header from './Header';
 import Body from './Body';
 import { getRowsWithChildren } from './util/TreeUtils';
@@ -118,9 +119,12 @@ class TreeList extends Component {
     const metadata = getRowsWithChildren(renderData, id, parentId);
 
     // construct update keys
-    const updateHash = {
+    const updateHash = hash({
+      data: renderData,
       sort: JSON.stringify(this.state.sortedColumns)
-    };
+    });
+
+    console.log('Update hash: ', typeof updateHash);
 
     return (
       <div className='tgrid'>

@@ -135,11 +135,13 @@ class Body extends Component {
     // adding this as scroll causes re-render
     // checking just expanded rows for now, can add
     // 'data' in future
-    return nextState.scrollTop !== this.state.scrollTop ||
+    const shouldUpdate = nextState.scrollTop !== this.state.scrollTop ||
       nextState.scrollLeft !== this.state.scrollLeft ||
       nextProps.width !== this.props.width ||
       nextState.expandedRows.length !== this.state.expandedRows.length ||
-      nextProps.updateHash.sort !== this.props.updateHash.sort;
+      nextProps.updateHash !== this.props.updateHash;
+    console.log('should update? ', shouldUpdate);
+    return shouldUpdate;
   }
 
   render() {
@@ -187,7 +189,7 @@ Body.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   onHScroll: PropTypes.func.isRequired,
-  updateHash: PropTypes.object,
+  updateHash: PropTypes.string,
   expandAll: PropTypes.bool,
   itemHeight: PropTypes.number
 };

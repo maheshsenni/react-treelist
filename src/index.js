@@ -41,15 +41,32 @@ const OPTIONS = {
   expandAll: true
 };
 
+let counter = 1;
+
 class App extends React.Component {
+  constructor() {
+    super();
+    this.rerender = this.rerender.bind(this);
+  }
+
+  rerender() {
+    console.log('rerender clicked');
+    console.log(DATA[0].firstName);
+    DATA[0].firstName = 'Updated ' + counter++;
+    this.forceUpdate();
+  }
+
   render () {
     return (
-      <TreeList
-        data={DATA}
-        columns={COLUMNS}
-        options={OPTIONS}
-        id={'id'}
-        parentId={'parentId'}></TreeList>
+      <div>
+        <button onClick={this.rerender}>Update</button>
+        <TreeList
+          data={DATA}
+          columns={COLUMNS}
+          options={OPTIONS}
+          id={'id'}
+          parentId={'parentId'}></TreeList>
+      </div>
     );
   }
 }
