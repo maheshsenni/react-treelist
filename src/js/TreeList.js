@@ -124,8 +124,6 @@ class TreeList extends Component {
       sort: JSON.stringify(this.state.sortedColumns)
     });
 
-    console.log('Update hash: ', typeof updateHash);
-
     return (
       <div className='tgrid'>
         <Header

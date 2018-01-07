@@ -140,7 +140,6 @@ class Body extends Component {
       nextProps.width !== this.props.width ||
       nextState.expandedRows.length !== this.state.expandedRows.length ||
       nextProps.updateHash !== this.props.updateHash;
-    console.log('should update? ', shouldUpdate);
     return shouldUpdate;
   }
 

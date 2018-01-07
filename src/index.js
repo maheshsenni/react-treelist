@@ -50,8 +50,6 @@ class App extends React.Component {
   }
 
   rerender() {
-    console.log('rerender clicked');
-    console.log(DATA[0].firstName);
     DATA[0].firstName = 'Updated ' + counter++;
     this.forceUpdate();
   }
