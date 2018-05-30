@@ -1,8 +1,20 @@
 language: node_js
 node_js:
-  - "6"
-  - "7"
-  - "5.11"
+  - node
+script:
+  - npm run lint
+  - npm test
+  - npm run build
 branches:
   only:
   - master
+deploy:
+  provider: npm
+  email: mahesh.h4evr@gmail.com
+  api_key:
+    secure: vzZxMlqnklGtOVX4/e9Hv/NDJkJx0IDD0wK9H29UeOo8R/33sCsyGwEDxfkWi/qDjFFlk0MrdWpmze76/M5Q17Aw0FQHsm+aN7JvHcRO65KAEQktEuadcXbG3ELBP9m35q2GF03rgBt1nj/XOmhTY4GrLaiEf3ZFMcx/i9jwiQaibzEp3/cgpziCA8DkIHZIGnrol1RkeAAAgfV4fIdqwswGAZOQ8aUOmbUamIkr/8wmcwaDfhta6aMK1GkhXWOxF0ucHUKTRasPQp+yGMm7cr0CHHUtki7exw1WvSecDP8curqxST+rnPfJg/+CtXxfhtZaTG97iweQGvEFyAuBC0YSIL7oN7SzyGIjaIgo2JGILiarS/eRCcrQdkeT3nxFXzJE2bmwkQLMtSg23w+R5U9JfiaewbrKKclfRXMqOOpGORO5M/nDHqvMXgiTnCGIAXo2F8PxWPwgFbynpLy5upys1q3oyzeTwLZRlq85g35m13iIx3Q2AbtMk1PSLBxQFSCm2w4W7deHPaDdHQ520LGO5+YvlWpuArjgG8CQv7IkE/JQPaiN3aFfnHjTNYVBcgubpzCrE8NmNJCesIqEkjqIvoSyBK0TbFBwhJueNCxVQC4OxpUi+E91tNtWQCF7NgY8B27vNbK0GXUyMYdlmV1U2QcCD122gagUwlhlYcY=
+  on:
+    tags: true
+    repo: maheshsenni/react-treelist
+    branch: master
+  skip_cleanup: true
