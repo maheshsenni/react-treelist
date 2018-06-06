@@ -21,7 +21,7 @@ data
 public
 scripts
 src
-demo
+docs
 .travis.yml
 CHANGELOG.md
 README.md

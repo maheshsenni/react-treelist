@@ -5,17 +5,29 @@ script:
   - npm run lint
   - npm test
   - npm run build
+  - npm run demo
 branches:
   only:
     - master
-    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+    - "/^\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
 deploy:
-  provider: npm
-  email: mahesh.h4evr@gmail.com
-  api_key:
-    secure: vzZxMlqnklGtOVX4/e9Hv/NDJkJx0IDD0wK9H29UeOo8R/33sCsyGwEDxfkWi/qDjFFlk0MrdWpmze76/M5Q17Aw0FQHsm+aN7JvHcRO65KAEQktEuadcXbG3ELBP9m35q2GF03rgBt1nj/XOmhTY4GrLaiEf3ZFMcx/i9jwiQaibzEp3/cgpziCA8DkIHZIGnrol1RkeAAAgfV4fIdqwswGAZOQ8aUOmbUamIkr/8wmcwaDfhta6aMK1GkhXWOxF0ucHUKTRasPQp+yGMm7cr0CHHUtki7exw1WvSecDP8curqxST+rnPfJg/+CtXxfhtZaTG97iweQGvEFyAuBC0YSIL7oN7SzyGIjaIgo2JGILiarS/eRCcrQdkeT3nxFXzJE2bmwkQLMtSg23w+R5U9JfiaewbrKKclfRXMqOOpGORO5M/nDHqvMXgiTnCGIAXo2F8PxWPwgFbynpLy5upys1q3oyzeTwLZRlq85g35m13iIx3Q2AbtMk1PSLBxQFSCm2w4W7deHPaDdHQ520LGO5+YvlWpuArjgG8CQv7IkE/JQPaiN3aFfnHjTNYVBcgubpzCrE8NmNJCesIqEkjqIvoSyBK0TbFBwhJueNCxVQC4OxpUi+E91tNtWQCF7NgY8B27vNbK0GXUyMYdlmV1U2QcCD122gagUwlhlYcY=
-  on:
-    tags: true
-    repo: maheshsenni/react-treelist
-    branch: master
-  skip_cleanup: true
+  - provider: npm
+    skip_cleanup: true
+    email: mahesh.h4evr@gmail.com
+    api_key:
+      secure: vzZxMlqnklGtOVX4/e9Hv/NDJkJx0IDD0wK9H29UeOo8R/33sCsyGwEDxfkWi/qDjFFlk0MrdWpmze76/M5Q17Aw0FQHsm+aN7JvHcRO65KAEQktEuadcXbG3ELBP9m35q2GF03rgBt1nj/XOmhTY4GrLaiEf3ZFMcx/i9jwiQaibzEp3/cgpziCA8DkIHZIGnrol1RkeAAAgfV4fIdqwswGAZOQ8aUOmbUamIkr/8wmcwaDfhta6aMK1GkhXWOxF0ucHUKTRasPQp+yGMm7cr0CHHUtki7exw1WvSecDP8curqxST+rnPfJg/+CtXxfhtZaTG97iweQGvEFyAuBC0YSIL7oN7SzyGIjaIgo2JGILiarS/eRCcrQdkeT3nxFXzJE2bmwkQLMtSg23w+R5U9JfiaewbrKKclfRXMqOOpGORO5M/nDHqvMXgiTnCGIAXo2F8PxWPwgFbynpLy5upys1q3oyzeTwLZRlq85g35m13iIx3Q2AbtMk1PSLBxQFSCm2w4W7deHPaDdHQ520LGO5+YvlWpuArjgG8CQv7IkE/JQPaiN3aFfnHjTNYVBcgubpzCrE8NmNJCesIqEkjqIvoSyBK0TbFBwhJueNCxVQC4OxpUi+E91tNtWQCF7NgY8B27vNbK0GXUyMYdlmV1U2QcCD122gagUwlhlYcY=
+    on:
+      tags: true
+      repo: maheshsenni/react-treelist
+      branch: master
+  - provider: pages
+    skip-cleanup: true
+    github-token: "$GITHUB_TOKEN"
+    local-dir: docs
+    on:
+      tags: true
+      repo: maheshsenni/react-treelist
+      branch: master
+env:
+  global:
+    secure: Zer1L7IWvLlfoV7rejSiauDvIeOC2jFU5pM14tx2ZTUncGUgA6qy+4YPvljG++jrnH3I981Mwzq+IhGztDwESLfIGTrmok8DTZtjhAn5LIyDsnz7Z5+UUxUZME/BTMgCfwJoh/7dAL3Hxt1KgeSTM1GmcrFegTeAGkz+qKdD7m4KAWKYQ9gWFyf6elLJoZl+/vLXfXPR+OHGVpxyfABDXzJcIH2bd0aJlxr8WGlIxBUMXwBoU6w18BFta/7Fxktrpnf8vl2HYhItKClY1PJlevpcQqwfV2AcKcKxM5mXiIbrUwme5wt3qbmmNyAES2CNK1YmrpA79CnWw6iwmZPSuSO2Dy7++5pYtOVHkqOAcAgD0XgmcojGgmHML4H9evnao41OcQg+TVyk9fPGKxj7MaWEDTDje9AUmhvaMoXQwbUze89CvZMcnm3Vnid7uvOodbk2kf8usI4o5/82FaI8rUs52YkZ69loB5EDyeZQ4ZuGsJqhh29Kh3m91UbuOOFJGjmWi+/bjoe2FyFNRaq86sAgRRiRsyykMqcBFmpseCKq6xgJbOgDUC4FIwRTtjjTsBHyhHbS0PgVDJoLDmiyulFYuJa7N+PldDH5eQozNSRAuyD00xGgUjeopPdbJjCAEhVyOiDR0uZyM5z9X0mWvXV6Di7qi0WVq6OOf7kbWzQ=

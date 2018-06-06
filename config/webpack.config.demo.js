@@ -230,10 +230,10 @@ module.exports = {
     // Otherwise React will be compiled in the very slow development mode.
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: paths.appHtml
-    }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   template: paths.appHtml
+    // }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin(env.stringified),
@@ -263,7 +263,10 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new CopyWebpackPlugin([
       { from: `${paths.appPublic}/favicon.ico`, to: paths.appDemoBuild },
-      { from: `${paths.appPublic}/manifest.json`, to: paths.appDemoBuild }
+      { from: `${paths.appPublic}/manifest.json`, to: paths.appDemoBuild },
+      { from: `${paths.appPublic}/index.html`, to: paths.appDemoBuild },
+      { from: `${paths.appPublic}/stylesheets`, to: path.join(paths.appDemoBuild, 'stylesheets') },
+      { from: `${paths.appPublic}/demo`, to: path.join(paths.appDemoBuild, 'demo') }
     ])
   ],
   // CRL: added externals block for library
