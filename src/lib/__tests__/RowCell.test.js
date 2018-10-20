@@ -55,6 +55,20 @@ describe('<RowCell />', () => {
     expect(wrapper.childAt(1).text()).toBe(formatter(testData));
   });
 
+  it('should call custom formatter with two arguments - cell and row data', () => {
+    const testData = 'Test data';
+    const rowData = { prop: 'test' };
+    const mockFormatter = jest.fn(data => data + ' formatted');
+
+    const wrapper = shallow(<RowCell reactKey={'test-key'}
+      formatter={mockFormatter} data={testData} rowData={rowData} />);
+    expect(wrapper.find('.tgrid-data-cell').length).toBe(1);
+    expect(mockFormatter.mock.calls.length).toBe(1);
+    expect(mockFormatter.mock.calls[0].length).toBe(2);
+    expect(mockFormatter).toBeCalledWith(testData, rowData);
+    expect(wrapper.childAt(1).text()).toBe(mockFormatter(testData));
+  });
+
   it('formats date values based on provided format', () => {
     const testData = new Date(1995, 11, 17).getTime();
     const format = 'dd/mm/yyyy';

@@ -55,7 +55,7 @@ The component accepts an array of column objects via the property `columns`. The
 |`width`|number|no|Width of the column|
 |`expand`|bool|no|Shows the expand or collapse in this column if set to `true`. If this option is not provided, the icons are shown in the first column by default.|
 |`class`|string|no|Class name to be added to the cells in the column. Can be used for applying specific styles for the column values|
-|`formatter`|function|no|If provided, the return value of this function will be dispayed in the rows for this column. The value of `field` from the data object will be passed as an argument.
+|`formatter`|function|no|If provided, the return value of this function will be dispayed in the rows for this column. The function receives two arguments: value of `field` from the data object as the first argument and entire row's data as the second argument.
 
 ### Component options
 

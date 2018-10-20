@@ -967,7 +967,7 @@
       field: 'employeeId',
       type: 'number',
       class: 'red',
-      formatter: function(value) {
+      formatter: function(value, rowData) {
         if (value) {
           return 'EMPID' + value;
         }

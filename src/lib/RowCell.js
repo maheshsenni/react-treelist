@@ -16,6 +16,7 @@ class RowCell extends Component {
       indent,
       useIndent,
       data,
+      rowData,
       type,
       format,
       formatter,
@@ -47,7 +48,7 @@ class RowCell extends Component {
     }
 
     if (typeof formatter === 'function') {
-      displayText = formatter(data);
+      displayText = formatter(data, rowData);
     }
 
     return (
@@ -65,6 +66,7 @@ RowCell.propTypes = {
   indent: PropTypes.number,
   useIndent: PropTypes.bool,
   data: PropTypes.any,
+  rowData: PropTypes.any,
   type: PropTypes.string,
   format: PropTypes.string,
   formatter: PropTypes.func,
