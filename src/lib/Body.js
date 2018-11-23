@@ -16,9 +16,11 @@ class Body extends Component {
     super(props);
     this.displayName = 'Body';
     this.handleExpandToggle = this.handleExpandToggle.bind(this);
+    this.handleSelectRow = this.handleSelectRow.bind(this);
     this.onScroll = this.onScroll.bind(this);
     this.state = {
       expandedRows: [],
+      selectedRow: null,
       scrollTop: 0,
       scrollLeft: 0
     };
@@ -51,7 +53,7 @@ class Body extends Component {
     // push the parent row first
     rows.push(createRow(row, level, columns, idField,
       canExpand, this.state.expandedRows.indexOf(row[idField]) > -1,
-      this.handleExpandToggle));
+      this.handleExpandToggle, this.props.canSelect ? this.handleSelectRow : () => {}, row[idField] === this.state.selectedRow));
     // children in next level for indentation
     const nextLevel = ++level;
     if (canExpand && _isExpanded(row[idField], this.state.expandedRows)) {
@@ -84,6 +86,21 @@ class Body extends Component {
       this.setState({
         expandedRows: [...this.state.expandedRows, rowId]
       });
+    }
+  }
+
+  handleSelectRow(row) {
+    if (row[this.props.idField] === this.state.selectedRow) {
+      // deselect
+      this.setState({
+        selectedRow: null
+      });
+      this.props.onSelectRow(null);
+    } else {
+      this.setState({
+        selectedRow: row[this.props.idField]
+      });
+      this.props.onSelectRow(row);
     }
   }
 
@@ -140,7 +157,8 @@ class Body extends Component {
       nextState.scrollLeft !== this.state.scrollLeft ||
       nextProps.width !== this.props.width ||
       nextState.expandedRows.length !== this.state.expandedRows.length ||
-      nextProps.updateHash !== this.props.updateHash;
+      nextProps.updateHash !== this.props.updateHash ||
+      nextState.selectedRow !== this.state.selectedRow;
     return shouldUpdate;
   }
 
@@ -191,14 +209,18 @@ Body.propTypes = {
   onHScroll: PropTypes.func.isRequired,
   updateHash: PropTypes.string,
   expandAll: PropTypes.bool,
-  itemHeight: PropTypes.number
+  itemHeight: PropTypes.number,
+  onSelectRow: PropTypes.func,
+  canSelect: PropTypes.bool
 };
 
 Body.defaultProps = {
   height: null,
   updateHash: {},
   expandAll: false,
-  itemHeight: 35
+  itemHeight: 35,
+  onSelectRow: () => {},
+  canSelect: false
 };
 
 export default Body;

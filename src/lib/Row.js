@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import '../css/row.css';
 
 import RowCell from './RowCell';
 
@@ -8,10 +9,16 @@ class Row extends Component {
     super(props);
     this.displayName = 'Row';
     this.handleExpandToggle = this.handleExpandToggle.bind(this);
+    this.handleSelectRow = this.handleSelectRow.bind(this);
   }
 
-  handleExpandToggle() {
+  handleExpandToggle(e) {
+    e.stopPropagation();
     this.props.onExpandToggle(this.props.data);
+  }
+
+  handleSelectRow(e) {
+    this.props.onSelect(this.props.data, e);
   }
 
   makeCells(columns, data, canExpand) {
@@ -41,17 +48,18 @@ class Row extends Component {
           className={col.class}
           showExpandCollapse={canExpand && (expandColumn.field === col.field)}
           isExpanded={this.props.expanded}
-          onExpandToggle={this.handleExpandToggle}></RowCell>
+          onExpandToggle={this.handleExpandToggle}
+          ></RowCell>
       );
     });
   }
 
   render() {
-    const { columns, data, canExpand } = this.props;
+    const { columns, data, canExpand, selected } = this.props;
     const cells = this.makeCells(columns, data, canExpand);
 
     return (
-      <tr>{cells}</tr>
+      <tr className={selected ? "row-selected" : ""} onClick={this.handleSelectRow}>{cells}</tr>
     );
   }
 }
@@ -63,10 +71,12 @@ Row.propTypes = {
   level: PropTypes.number.isRequired,
   canExpand: PropTypes.bool.isRequired,
   expanded: PropTypes.bool,
-  onExpandToggle: PropTypes.func
+  selected: PropTypes.bool,
+  onExpandToggle: PropTypes.func,
+  onSelect: PropTypes.func
 };
 
-const createRow = function(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler) {
+const createRow = function(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler, onSelectToggleHandler, selected) {
   return (<Row
             key={'row-' + data[idField]}
             reactKey={'row-' + data[idField]}
@@ -75,7 +85,10 @@ const createRow = function(data, level, columns, idField, canExpand, expanded, o
             level={level}
             canExpand={canExpand}
             expanded={expanded}
-            onExpandToggle={onExpandToggleHandler}></Row>);
+            onExpandToggle={onExpandToggleHandler}
+            onSelect={onSelectToggleHandler}
+            selected={selected}
+            ></Row>);
 }
 
 export { Row, createRow };
