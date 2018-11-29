@@ -40,6 +40,20 @@ describe('<Row />', () => {
         expect(wrapper.find('.row-selected')).toHaveLength(0);
     });
 
+    it('renders row with given className', () => {
+        const className = 'myclass';
+        const wrapper = shallow(<Row reactKey={'test-key'} data={testData} columns={columns} level={0} canExpand={false} className={className}/>);
+        expect(wrapper.find('.myclass')).toHaveLength(1);
+    });
+
+    it('renders row with given dynamic className', () => {
+        const className = function (data) {
+            return data.position;
+        };
+        const wrapper = shallow(<Row reactKey={'test-key'} data={testData} columns={columns} level={0} canExpand={false} className={className} />);
+        expect(wrapper.find('.CEO')).toHaveLength(1);
+    });
+
     it('onSelect is called on row click', () => {
         const handler = jest.fn();
         const wrapper = shallow(<Row reactKey={'test-key'} data={testData} columns={columns} level={0} canExpand={false} onSelect={handler} />);

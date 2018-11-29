@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../css/row.css';
 
 import RowCell from './RowCell';
+import { getClassName } from './util/TreeUtils'
 
 class Row extends Component {
   constructor(props) {
@@ -57,9 +58,11 @@ class Row extends Component {
   render() {
     const { columns, data, canExpand, selected } = this.props;
     const cells = this.makeCells(columns, data, canExpand);
+    const selectedClassName = selected ? "row-selected" : "";
+    const className = [selectedClassName, getClassName(this.props.className, this.props.data)].join(' ');
 
     return (
-      <tr className={selected ? "row-selected" : ""} onClick={this.handleSelectRow}>{cells}</tr>
+      <tr className={className} onClick={this.handleSelectRow}>{cells}</tr>
     );
   }
 }
@@ -73,10 +76,11 @@ Row.propTypes = {
   expanded: PropTypes.bool,
   selected: PropTypes.bool,
   onExpandToggle: PropTypes.func,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 };
 
-const createRow = function(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler, onSelectToggleHandler, selected) {
+const createRow = function(data, level, columns, idField, canExpand, expanded, onExpandToggleHandler, onSelectToggleHandler, selected, rowClass) {
   return (<Row
             key={'row-' + data[idField]}
             reactKey={'row-' + data[idField]}
@@ -88,6 +92,7 @@ const createRow = function(data, level, columns, idField, canExpand, expanded, o
             onExpandToggle={onExpandToggleHandler}
             onSelect={onSelectToggleHandler}
             selected={selected}
+            className={rowClass}
             ></Row>);
 }
 

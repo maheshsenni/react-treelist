@@ -28,7 +28,7 @@ class Body extends Component {
     this._expandAllComplete = false;
   }
 
-  makeRows(data, metadata, columns, idField, parentIdField, expandAll) {
+  makeRows(data, metadata, columns, idField, parentIdField, expandAll, rowClass) {
     // start with first level records
     const rootParents = getRootParents(data, parentIdField);
 
@@ -42,24 +42,26 @@ class Body extends Component {
     const rows = [];
     rootParents.forEach((d) => {
       // parent rows start at level 0
-      rows.push(...this.makeRowsRecursive(d, 0, metadata.map, columns, idField, parentIdField));
+      rows.push(...this.makeRowsRecursive(d, 0, metadata.map, columns, idField, parentIdField, rowClass));
     });
     return rows;
   }
 
-  makeRowsRecursive(row, level, metadata, columns, idField, parentIdField) {
+  makeRowsRecursive(row, level, metadata, columns, idField, parentIdField, rowClass) {
     const rows = [];
     const canExpand = row[idField] in metadata;
     // push the parent row first
     rows.push(createRow(row, level, columns, idField,
       canExpand, this.state.expandedRows.indexOf(row[idField]) > -1,
-      this.handleExpandToggle, this.props.canSelect ? this.handleSelectRow : () => {}, row[idField] === this.state.selectedRow));
+      this.handleExpandToggle,
+        this.props.canSelect ? this.handleSelectRow : () => { }, row[idField] === this.state.selectedRow,
+        rowClass));
     // children in next level for indentation
     const nextLevel = ++level;
     if (canExpand && _isExpanded(row[idField], this.state.expandedRows)) {
       let children = getChildren(row, this.props.data, idField, parentIdField);
       children.forEach((d) => {
-        rows.push(...this.makeRowsRecursive(d, nextLevel, metadata, columns, idField, parentIdField));
+        rows.push(...this.makeRowsRecursive(d, nextLevel, metadata, columns, idField, parentIdField, rowClass));
       });
     }
     return rows;
@@ -164,10 +166,10 @@ class Body extends Component {
 
   render() {
     const { columns, data, metadata, idField,
-      parentIdField, width, height, expandAll } = this.props;
+      parentIdField, width, height, expandAll, rowClass } = this.props;
 
     const rows = this.makeRows(data, metadata, columns,
-      idField, parentIdField, expandAll);
+      idField, parentIdField, expandAll, rowClass);
 
     const [startIndex, endIndex,
       topFillerHeight, bottomFillerHeight] = this.getVisibleRowsRange(rows.length);
@@ -211,7 +213,8 @@ Body.propTypes = {
   expandAll: PropTypes.bool,
   itemHeight: PropTypes.number,
   onSelectRow: PropTypes.func,
-  canSelect: PropTypes.bool
+  canSelect: PropTypes.bool,
+  rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 };
 
 Body.defaultProps = {

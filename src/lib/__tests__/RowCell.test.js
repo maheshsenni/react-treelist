@@ -107,6 +107,21 @@ describe('<RowCell />', () => {
     expect(wrapper.childAt(1).hasClass(className)).toBe(true);
   });
 
+  it('renders row cell with custom dynamic class name', () => {
+    const rowData = {
+      field1: 'myvalue1',
+      field2: 'myvalue2'
+    };
+
+    
+    const className = function (data) {
+      return data.field1;
+    };
+    const wrapper = shallow(<RowCell reactKey={'test-key'} className={className} rowData={rowData}/>);
+    expect(wrapper.find('.tgrid-data-cell').length).toBe(1);
+    expect(wrapper.childAt(1).hasClass('myvalue1')).toBe(true);
+  });
+
   it('calls callback function when expand icon is clicked', () => {
     const onExpandToggle = jest.fn();
     const wrapper = shallow(<RowCell reactKey={'test-key'} showExpandCollapse={true} onExpandToggle={onExpandToggle} />);

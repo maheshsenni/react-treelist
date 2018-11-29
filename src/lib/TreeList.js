@@ -152,6 +152,7 @@ class TreeList extends Component {
           expandAll={options.expandAll}
           canSelect={options.canSelect}
           onSelectRow={handlers.onSelectRow}
+          rowClass={options.rowClass}
           >
         </Body>
       </div>
