@@ -1,3 +1,5 @@
+import isFunction from 'lodash/isFunction';
+
 const getRowsWithChildren = function(data, idField, parentIdField) {
   const metadata = {
     map: {},
@@ -73,10 +75,18 @@ const getFilteredDisplayRows = function(subset, tree, idField) {
   return rows;
 };
 
+const getClassName = function(className, data) {
+  if (isFunction(className)) {
+    return className(data);
+  }
+  return className || '';
+}
+
 export {
   getRowsWithChildren,
   getRootParents,
   getChildren,
   getTree,
-  getFilteredDisplayRows
+  getFilteredDisplayRows,
+  getClassName
 };

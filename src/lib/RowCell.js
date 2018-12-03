@@ -4,6 +4,7 @@ import dateFormat from 'dateformat';
 
 import '../css/row-cell.css';
 import RowIndent from './RowIndent';
+import {getClassName} from './util/TreeUtils';
 
 class RowCell extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class RowCell extends Component {
       <td className='tgrid-data-cell'>
         {rowIndent}
         {expandToggleIcon}
-        <span className={className}>{displayText}</span>
+        <span className={getClassName(className, rowData)}>{displayText}</span>
       </td>
     );
   }
@@ -70,7 +71,7 @@ RowCell.propTypes = {
   type: PropTypes.string,
   format: PropTypes.string,
   formatter: PropTypes.func,
-  className: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   showExpandCollapse: PropTypes.bool,
   isExpanded: PropTypes.bool,
   onExpandToggle: PropTypes.func

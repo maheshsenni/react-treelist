@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>React Treelist demo | Dynamic CSS</title>
+  <link rel="stylesheet" type="text/css" href="../css/index.css" media="screen">
+  <style type="text/css">
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin: 50px 0 0;
+      padding: 0;
+    }
+
+    .container {
+      margin: 0 auto;
+      width: 800px;
+    }
+
+    .json-text {
+      white-space: pre;
+      color: #c71585;
+      padding: 1em;
+      border: 1px solid #efefef;
+      background: #fefefe;
+    }
+
+    .pos-associate {
+      background: #85e48d;
+    }
+
+    .pos-manager {
+      background: #5ae0f1;
+    }
+
+    .cell-highlight {
+      color: rgb(255, 166, 0);
+    }
+  </style>
+  <script type="text/javascript">
+    var TreeListOptions = {};
+    TreeListOptions.DATA = [{
+      id: 0,
+      name: 'Tim Robbins',
+      position: 'CEO',
+      parentId: null
+    }, {
+      id: 1,
+      name: 'Bob Gunton',
+      position: 'Manager',
+      parentId: 0
+    }, {
+      id: 2,
+      name: 'William Sadler',
+      position: 'Manager',
+      parentId: 0
+    }, {
+      id: 3,
+      name: 'Clancy Brown',
+      position: 'Associate',
+      parentId: 1
+    }, {
+      id: 4,
+      name: 'Gil Bellows',
+      position: 'Associate',
+      parentId: 1
+    }, {
+      id: 5,
+      name: 'Mark Rolston',
+      position: 'Associate',
+      parentId: 1
+    }, {
+      id: 6,
+      name: 'James Whitmore',
+      position: 'Associate',
+      parentId: 2
+    }, {
+      id: 7,
+      name: 'Jeffrey DeMunn',
+      position: 'Associate',
+      parentId: 2
+    }];
+
+    TreeListOptions.COLUMNS = [{
+      title: 'ID',
+      field: 'id',
+      type: 'number',
+      width: 100
+    }, {
+      title: 'Name',
+      field: 'name',
+      type: 'string',
+      class: function(data) {
+        if (data.name.toLowerCase().indexOf('a') !== -1) {
+          return 'cell-highlight';
+        }
+        return '';
+      }
+    }, {
+      title: 'Position',
+      field: 'position',
+      type: 'string'
+    }];
+
+    TreeListOptions.OPTIONS = {
+      minimumColWidth: 100,
+      expandAll: true,
+      rowClass: function(data) {
+        if (data.position === 'Associate') {
+          return 'pos-associate';
+        }
+        if (data.position === 'Manager') {
+          return 'pos-manager';
+        }
+        return '';
+      }
+    };
+  </script>
+</head>
+
+<body>
+  <section class="container">
+    <p>Treelist with dynamic styles on rows and cells.</p>
+    <div id="tree"></div>
+    <section class="columns">
+      <h3>Columns</h3>
+      <p class="json-text" id="columns-json"></p>
+    </section>
+    <section class="options">
+      <h3>Options</h3>
+      <p class="json-text" id="options-json"></p>
+    </section>
+  </section>
+  <script src="../index.js"></script>
+  <script type="text/javascript">
+    var columnsJsonEl = document.querySelector('#columns-json');
+    columnsJsonEl.textContent = JSON.stringify(TreeListOptions.COLUMNS, null, 6);
+    var optionsJsonEl = document.querySelector('#options-json');
+    optionsJsonEl.textContent = JSON.stringify(TreeListOptions.OPTIONS, null, 6);
+  </script>
+</body>
+
+</html>

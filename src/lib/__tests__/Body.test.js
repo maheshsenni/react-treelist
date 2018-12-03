@@ -82,8 +82,20 @@ describe('<Body />', () => {
         expect(wrapper.find('.row-selected')).toHaveLength(0);
     });
 
-    /*it('does not allow selection of row if canSelect is false', () => {
-        const wrapper = shallow(<Row reactKey={'test-key'} data={testData} columns={columns} level={0} canExpand={false} selected />);
-        expect(wrapper.find('.row-selected')).toHaveLength(1);
-    });*/
+    it('dynamic rows css', () => {
+        const className = function(data) {
+            return data.position;
+        };
+
+        const wrapper = mount(<Body reactKey={'test-key'} data={testData} columns={columns}
+            idField="id" parentIdField="parentId" onHScroll={jest.fn()}
+            expandAll
+            metadata={getRowsWithChildren(testData, "id", "parentId")} updateHash=""
+            height={100}
+            itemHeight={10}
+            rowClass={className}
+        />);
+        expect(wrapper.find('.CEO')).toHaveLength(1);
+        expect(wrapper.find('.Manager')).toHaveLength(1);
+    });
 });
