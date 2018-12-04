@@ -2,6 +2,7 @@ import '../css/body.css';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import isNil from 'lodash/isNil';
 import Colgroup from './Colgroup';
 import { createRow } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
@@ -160,6 +161,7 @@ class Body extends Component {
       nextProps.width !== this.props.width ||
       nextState.expandedRows.length !== this.state.expandedRows.length ||
       nextProps.updateHash !== this.props.updateHash ||
+      (!isNil(nextProps.refresh) && nextProps.refresh !== this.props.refresh) ||
       nextState.selectedRow !== this.state.selectedRow;
     return shouldUpdate;
   }
@@ -214,7 +216,8 @@ Body.propTypes = {
   itemHeight: PropTypes.number,
   onSelectRow: PropTypes.func,
   canSelect: PropTypes.bool,
-  rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+  rowClass: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  refresh: PropTypes.any
 };
 
 Body.defaultProps = {
