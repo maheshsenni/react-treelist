@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>React Treelist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">React Treelist</h1>
+      <h2 class="project-tagline">A React treelist component to display data in tree structure.</h2>
+      <a href="https://github.com/maheshsenni/react-treelist" class="btn">View on GitHub</a>
+      <a href="#options" class="btn">Configuration</a>
+      <a href="#demo" class="btn">Demo</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-source-shell"><pre>npm install --save react-treelist</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">TreeList</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-treelist<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">&lt;</span>TreeList
+  data<span class="pl-k">=</span>{<span class="pl-c1">DATA</span>}  
+  columns<span class="pl-k">=</span>{<span class="pl-c1">COLUMNS</span>}
+  options<span class="pl-k">=</span>{<span class="pl-c1">OPTIONS</span>}
+  handlers<span class="pl-k">=</span>{<span class="pl-c1">HANDLERS</span>}
+  id<span class="pl-k">=</span>{<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span>}
+  parentId<span class="pl-k">=</span>{<span class="pl-s"><span class="pl-pds">'</span>parentId<span class="pl-pds">'</span></span>}<span class="pl-k">&gt;&lt;</span><span class="pl-k">/</span>TreeList<span class="pl-k">&gt;</span></pre></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td>array</td>
+        <td>Array of data objects which become rows in the treelist</td>
+      </tr>
+      <tr>
+        <td><code>columns</code></td>
+        <td>array</td>
+        <td>Array of column configuration options. See <a href="#column-options">column options</a> for more details.</td>
+      </tr>
+      <tr>
+        <td><code>options</code></td>
+        <td>object</td>
+        <td>Component level configuration options. See <a href="#component-options">component options</a> for more details.</td>
+      </tr>
+      <tr>
+        <td><code>handlers</code></td>
+        <td>object</td>
+        <td>Component level event handlers. See <a href="#component-handlers">component handlers</a> for more details.</td>
+      </tr>
+      <tr>
+        <td><code>id</code></td>
+        <td>string</td>
+        <td>Data field which uniquely identifies each record</td>
+      </tr>
+      <tr>
+        <td><code>parentId</code></td>
+        <td>string</td>
+        <td>Data field which identifies the parent row of a record. Data objects with <code>null</code> value in this field are treated as top-level parent records</td>
+      </tr>
+    </tbody>
+  </table>
+
+<p>See <code>src/demo/App.js</code> for an example.</p>
+
+<h2>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options</h2>
+
+<h3>
+<a id="column-options" class="anchor" href="#column-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Column options</h3>
+
+<p>The component accepts an array of column objects via the property <code>columns</code>. The column objects can accept the following properties.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property name</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>title</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Will be displayed as column header</td>
+    </tr>
+    <tr>
+      <td><code>field</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Property in the data object whose value will be displayed in the rows against this column</td>
+    </tr>
+    <tr>
+      <td><code>type</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Data type of the values displayed in the column. Required for sorting and applying formatting. Valid values: <code>number</code>, <code>string</code>, <code>date</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>width</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Width of the column</td>
+    </tr>
+    <tr>
+      <td><code>expand</code></td>
+      <td>bool</td>
+      <td>no</td>
+      <td>Shows the expand or collapse in this column if set to <code>true</code>. If this option is not provided, the icons are shown in the first column by default.</td>
+    </tr>
+    <tr>
+      <td><code>class</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>Class name to be added to the cells in the column. Can be used for applying specific styles for the column values. Can be a fixed string or a function. The function will receive the row data as an argument</td>
+    </tr>
+    <tr>
+      <td><code>formatter</code></td>
+      <td>function</td>
+      <td>no</td>
+      <td>If provided, the return value of this function will be dispayed in the rows for this column. The value of <code>field</code> from the data object will be passed as an argument.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>
+<a id="component-options" class="anchor" href="#component-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Component options</h3>
+
+<p>Component level options are accepted via the property, <code>options</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property name</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>expandAll</code></td>
+      <td>bool</td>
+      <td>no</td>
+      <td>If set to <code>true</code> will expand all rows by default when the component is rendered for the first time. Defaults to <code>false</code>.</td>
+    </tr>
+    <tr>
+      <td><code>height</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Height of the treelist body. When not provided, the component will expand to show all available rows.</td>
+    </tr>
+    <tr>
+      <td><code>minimumColWidth</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Minimum width of columns. Columns can't be resized below this value.</td>
+    </tr>
+    <tr>
+      <td><code>canSelect</code></td>
+      <td>bool</td>
+      <td>no</td>
+      <td>Allows row selection on click. Selected rows have the row-selected class name applied</td>
+    </tr>
+    <tr>
+      <td><code>rowClass</code></td>
+      <td>string or function</td>
+      <td>no</td>
+      <td>Class name to be added to the rows. Can be used for applying specific styles for the grid rows. Can be a fixed string or a function. The function will receive the row data as an argument</td>
+    </tr>
+  </tbody>
+</table>
+
+<a id="component-handlers" class="anchor" href="#component-handlers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Component
+handlers</h3>
+
+<p>Component level event handlers are accepted via the property, <code>handlers</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property name</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>onSelectRow</code></td>
+      <td>function</td>
+      <td>no</td>
+      <td>handler called every time the user selects or deselects a row. The handler will receive the row object as
+        the only argument (null in case of deselection)
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- Demo -->
+<h2>
+  <a id="demo" class="anchor" href="#demo" aria-hidden="true">
+  <span aria-hidden="true" class="octicon octicon-link"></span></a>Demo
+</h2>
+<ul>
+  <li>
+    <a href="demo/basic.html" aria-hidden="true">Basic</a>
+  </li>
+  <li>
+    <a href="demo/large-data.html" aria-hidden="true">Large data set</a>
+  </li>
+  <li>
+    <a href="demo/fixed-height.html" aria-hidden="true">Fixed height</a>
+  </li>
+  <li>
+    <a href="demo/custom-styles.html" aria-hidden="true">Custom styles for columns</a>
+  </li>
+  <li>
+    <a href="demo/rowselect.html" aria-hidden="true">Row selection</a>
+  </li>
+  <li>
+    <a href="demo/dynamic-css.html" aria-hidden="true">Dynamic styling</a>
+  </li>
+</ul>
+
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>This project is licensed under the MIT License - see the <a href="LICENSE.md">LICENSE.md</a> file for details</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/maheshsenni/react-treelist">React Treelist</a> is maintained by <a href="https://github.com/maheshsenni">maheshsenni</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
