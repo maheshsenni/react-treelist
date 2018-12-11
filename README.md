@@ -42,6 +42,7 @@ import 'react-treelist/build/css/index.css';
 |`handlers`|object|Component level handlers. See [handlers](#handlers) for more details.|
 |`id`|string|Data field which uniquely identifies each record|
 |`parentId`|string|Data field which identifies the parent row of a record. Data objects with `null` value in this field are treated as top-level parent records|  
+|`refresh`|number|This optional property can be used to improve render performance if the data is not expected to change often. A hash is computed for every render to check if the data has changed, so that the DOM can be re-rendered again. If the dataset is large, this can affect performance. Setting this property will disable the built-in hash calculation and the component will be re-rendered only if this property changes.|
 
 See `src/js/index.js` for an example.
 
