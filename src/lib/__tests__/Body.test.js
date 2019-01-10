@@ -82,6 +82,24 @@ describe('<Body />', () => {
         expect(wrapper.find('.row-selected')).toHaveLength(0);
     });
 
+    it("do not allow deselection of row clicking on the selected row if canDeselect is false", () => {
+      const handler = jest.fn();
+      const wrapper = mount(<Body reactKey={"test-key"} data={testData} columns={columns} canSelect canDeselect={false} idField="id" parentIdField="parentId" onHScroll={jest.fn()} metadata={getRowsWithChildren(testData, "id", "parentId")} updateHash="" height={100} itemHeight={10} onSelectRow={handler} />);
+      wrapper
+        .find("tr")
+        .at(1)
+        .simulate("click");
+      expect(handler.mock.calls).toHaveLength(1);
+      expect(wrapper.find(".row-selected")).toHaveLength(1);
+
+      wrapper
+        .find("tr")
+        .at(1)
+        .simulate("click");
+      expect(handler.mock.calls).toHaveLength(1);
+      expect(wrapper.find(".row-selected")).toHaveLength(1);
+    });
+
     it('dynamic rows css', () => {
         const className = function(data) {
             return data.position;

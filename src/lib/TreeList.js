@@ -162,6 +162,7 @@ class TreeList extends Component {
           refresh={refresh}
           expandAll={options.expandAll}
           canSelect={options.canSelect}
+          canDeselect={options.canDeselect}
           onSelectRow={handlers.onSelectRow}
           rowClass={options.rowClass}
           >
