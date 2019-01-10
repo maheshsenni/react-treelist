@@ -72,6 +72,7 @@ Component level options are accepted via the property, `options`.
 |`height`|number|no|Height of the treelist body. When not provided, the component will expand to show all available rows.|
 |`minimumColWidth`|number|no|Minimum width of columns. Columns can't be resized below this value.|
 |`canSelect`|bool|no|Set this as `true` to enable the row selection handler. See `onSelectRow` in [handlers](#handlers) for details.|
+|`canDeselect`|bool|no|Set this as `false` to disable deselection of the selected row (canSelect must be true, click on the selected row to disable it). Defaults to `true`.|
 |`rowClass`|string &#124; function|no|Class name (string) to be added to rows. Can be used for applying specific styles for the rows. A function can also be provided, which will be executed with the row's data object to determine the class name.|
 
 ### Handlers
